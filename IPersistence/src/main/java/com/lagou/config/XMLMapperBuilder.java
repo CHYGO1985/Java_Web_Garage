@@ -29,12 +29,12 @@ public class XMLMapperBuilder {
         for (Element element : list) {
             String id = element.attributeValue("id");
             String resultType = element.attributeValue("resultType");
-            String paramterType = element.attributeValue("paramterType");
+            String parameterType = element.attributeValue("parameterType");
             String sqlText = element.getTextTrim();
             MappedStatement mappedStatement = new MappedStatement();
             mappedStatement.setId(id);
             mappedStatement.setResultType(resultType);
-            mappedStatement.setParamterType(paramterType);
+            mappedStatement.setParameterType(parameterType);
             mappedStatement.setSql(sqlText);
             String key = namespace+"."+id;
             configuration.getMappedStatementMap().put(key,mappedStatement);

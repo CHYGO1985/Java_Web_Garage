@@ -64,6 +64,8 @@ public class DefaultSqlSession implements SqlSession {
                         return selectOne(statementId,args);
                     case "updateByCondition": return null;
                     case "deleteByCondition": return null;
+                    case "findByCondition":
+                        return selectOne(statementId,args);
                     default: return null;
 
                 }

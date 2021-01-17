@@ -36,7 +36,7 @@ public class simpleExecutor implements  Executor {
 
         // 4. 设置参数
         //    获取到了参数的全路径
-        String paramterType = mappedStatement.getParamterType();
+        String paramterType = mappedStatement.getParameterType();
         Class<?> paramtertypeClass = getClassType(paramterType);
 
         List<ParameterMapping> parameterMappingList = boundSql.getParameterMappingList();
@@ -51,9 +51,7 @@ public class simpleExecutor implements  Executor {
             Object o = declaredField.get(params[0]);
 
             preparedStatement.setObject(i+1,o);
-
         }
-
 
         // 5. 执行sql
         ResultSet resultSet = preparedStatement.executeQuery();
