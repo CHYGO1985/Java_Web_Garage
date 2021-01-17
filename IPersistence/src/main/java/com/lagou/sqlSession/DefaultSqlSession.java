@@ -36,6 +36,16 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
+    public void deleteOne(String statementid, Object... params) throws Exception {
+
+    }
+
+    @Override
+    public void updateOne(String statementid, Object... parems) throws Exception {
+
+    }
+
+    @Override
     public <T> T getMapper(Class<?> mapperClass) {
         // 使用JDK动态代理来为Dao接口生成代理对象，并返回
 
