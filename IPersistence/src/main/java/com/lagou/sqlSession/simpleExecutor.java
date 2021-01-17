@@ -7,6 +7,7 @@ import com.lagou.pojo.MappedStatement;
 import com.lagou.utils.GenericTokenParser;
 import com.lagou.utils.ParameterMapping;
 import com.lagou.utils.ParameterMappingTokenHandler;
+import com.lagou.utils.Utils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -54,6 +55,14 @@ public class simpleExecutor implements  Executor {
         }
 
         // 5. 执行sql
+
+        String sqlKeyWord = sql.split(" ")[0];
+        if (sqlKeyWord.equalsIgnoreCase(Utils.UPDATE_WORD) ||
+                sqlKeyWord.equalsIgnoreCase(Utils.DELETE_WORD)) {
+            preparedStatement.executeUpdate();
+            return null;
+        }
+
         ResultSet resultSet = preparedStatement.executeQuery();
         String resultType = mappedStatement.getResultType();
         Class<?> resultTypeClass = getClassType(resultType);

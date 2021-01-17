@@ -15,7 +15,7 @@
     </select>
 
     <select id="updateByCondition" parameterType = "com.lagou.pojo.User">
-        update user set username = #{username} where id = #{id};
+        update user set username = #{username} where id = #{id}
     </select>
 
     <select id="deleteByCondition" parameterType="com.lagou.pojo.User">

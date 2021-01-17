@@ -37,12 +37,16 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public void deleteOne(String statementid, Object... params) throws Exception {
-
+        return ;
     }
 
     @Override
-    public void updateOne(String statementid, Object... parems) throws Exception {
+    public void updateOne(String statementid, Object... params) throws Exception {
 
+        //将要去完成对simpleExecutor里的query方法的调用
+        simpleExecutor simpleExecutor = new simpleExecutor();
+        MappedStatement mappedStatement = configuration.getMappedStatementMap().get(statementid);
+        simpleExecutor.query(configuration, mappedStatement, params);
     }
 
     @Override
@@ -72,7 +76,9 @@ public class DefaultSqlSession implements SqlSession {
                         }
 
                         return selectOne(statementId,args);
-                    case "updateByCondition": return null;
+                    case "updateByCondition":
+                        updateOne(statementId, args);
+                        return null;
                     case "deleteByCondition": return null;
                     case "findByCondition":
                         return selectOne(statementId,args);
