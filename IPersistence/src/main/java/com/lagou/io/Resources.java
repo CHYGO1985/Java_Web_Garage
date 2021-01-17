@@ -10,7 +10,4 @@ public class Resources {
         return  resourceAsStream;
 
     }
-
-
-
 }

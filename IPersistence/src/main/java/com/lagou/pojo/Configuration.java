@@ -9,8 +9,9 @@ public class Configuration {
     private DataSource dataSource;
 
     /*
-    *   key: statementid  value:封装好的mappedStatement对象
-     * */
+     * key: statementid  value:封装好的mappedStatement对象
+     *
+     */
     Map<String,MappedStatement> mappedStatementMap = new HashMap<>();
 
     public DataSource getDataSource() {

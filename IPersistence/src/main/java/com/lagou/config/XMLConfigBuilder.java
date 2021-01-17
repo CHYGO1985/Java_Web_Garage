@@ -56,9 +56,6 @@ public class XMLConfigBuilder {
 
         }
 
-
-
-
         return configuration;
     }
 
