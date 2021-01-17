@@ -15,11 +15,11 @@
     </select>
 
     <select id="updateByCondition" parameterType = "com.lagou.pojo.User">
-        update user set username = 'hanmeimei' where id = 1;
+        update user set username = #{username} where id = #{id};
     </select>
 
     <select id="deleteByCondition" parameterType="com.lagou.pojo.User">
-        INSERT INTO user VALUES (#{id}, #{username}, #{password}, #{birthday})
+        DELETE FROM user where id = #{id}
     </select>
 
 </mapper>

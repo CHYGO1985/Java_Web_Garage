@@ -52,20 +52,33 @@ public class DefaultSqlSession implements SqlSession {
 
                 // 准备参数2：params:args
                 // 获取被调用方法的返回值类型
-                Type genericReturnType = method.getGenericReturnType();
+                switch (methodName) {
+                    case "findAll":
+                        Type genericReturnType = method.getGenericReturnType();
+                        // 判断是否进行了 泛型类型参数化
+                        if(genericReturnType instanceof ParameterizedType){
+                            List<Object> objects = selectList(statementId, args);
+                            return objects;
+                        }
+
+                        return selectOne(statementId,args);
+                    case "updateByCondition": return null;
+                    case "deleteByCondition": return null;
+                    default: return null;
+
+                }
+
+                /*Type genericReturnType = method.getGenericReturnType();
                 // 判断是否进行了 泛型类型参数化
                 if(genericReturnType instanceof ParameterizedType){
                     List<Object> objects = selectList(statementId, args);
                     return objects;
                 }
 
-                return selectOne(statementId,args);
-
+                return selectOne(statementId,args);*/
             }
         });
 
         return (T) proxyInstance;
     }
-
-
 }

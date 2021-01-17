@@ -6,6 +6,7 @@ import com.lagou.pojo.User;
 import com.lagou.sqlSession.SqlSession;
 import com.lagou.sqlSession.SqlSessionFactory;
 import com.lagou.sqlSession.SqlSessionFactoryBuilder;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -38,9 +39,15 @@ public class IPersistenceTest {
         for (User user1 : all) {
             System.out.println(user1);
         }
-
     }
 
+    @Test
+    public void testDeleteId3User() throws Exception {
+        Assert.fail();
+    }
 
-
+    @Test
+    public void testUpdateId3UernameToLiLei() throws Exception {
+        Assert.fail();
+    }
 }
