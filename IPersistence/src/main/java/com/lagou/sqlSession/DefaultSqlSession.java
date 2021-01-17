@@ -37,13 +37,23 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public void deleteOne(String statementid, Object... params) throws Exception {
-        return ;
+
+        simpleExecutor simpleExecutor = new simpleExecutor();
+        MappedStatement mappedStatement = configuration.getMappedStatementMap().get(statementid);
+        simpleExecutor.query(configuration, mappedStatement, params);
     }
 
     @Override
     public void updateOne(String statementid, Object... params) throws Exception {
 
         //将要去完成对simpleExecutor里的query方法的调用
+        simpleExecutor simpleExecutor = new simpleExecutor();
+        MappedStatement mappedStatement = configuration.getMappedStatementMap().get(statementid);
+        simpleExecutor.query(configuration, mappedStatement, params);
+    }
+
+    @Override
+    public void insertOne(String statementid, Object... params) throws Exception {
         simpleExecutor simpleExecutor = new simpleExecutor();
         MappedStatement mappedStatement = configuration.getMappedStatementMap().get(statementid);
         simpleExecutor.query(configuration, mappedStatement, params);
@@ -79,11 +89,15 @@ public class DefaultSqlSession implements SqlSession {
                     case "updateByCondition":
                         updateOne(statementId, args);
                         return null;
-                    case "deleteByCondition": return null;
+                    case "deleteByCondition":
+                        deleteOne(statementId, args);
+                        return null;
+                    case "insertByCondition":
+                        insertOne(statementId, args);
+                        return null;
                     case "findByCondition":
                         return selectOne(statementId,args);
                     default: return null;
-
                 }
 
                 /*Type genericReturnType = method.getGenericReturnType();

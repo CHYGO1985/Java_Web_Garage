@@ -17,4 +17,7 @@ public interface IUserDao {
 
     //根据条件更新一条用户记录
     public void updateByCondition(User user) throws Exception;
+
+    // 添加一条用户记录
+    public void insertByCondition(User user) throws Exception;
 }

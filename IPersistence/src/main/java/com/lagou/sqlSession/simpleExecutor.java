@@ -55,10 +55,10 @@ public class simpleExecutor implements  Executor {
         }
 
         // 5. 执行sql
-
         String sqlKeyWord = sql.split(" ")[0];
         if (sqlKeyWord.equalsIgnoreCase(Utils.UPDATE_WORD) ||
-                sqlKeyWord.equalsIgnoreCase(Utils.DELETE_WORD)) {
+                sqlKeyWord.equalsIgnoreCase(Utils.DELETE_WORD) ||
+                sqlKeyWord.equalsIgnoreCase(Utils.INSERT_WORD)) {
             preparedStatement.executeUpdate();
             return null;
         }

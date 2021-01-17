@@ -16,6 +16,9 @@ public interface SqlSession {
     //根据条件更新一条用户记录
     public void updateOne(String statementid, Object... parems) throws Exception;
 
+    //添加一条用户记录
+    public void insertOne(String statementid, Object... params) throws Exception;
+
     //为Dao接口生成代理实现类
     public <T> T getMapper(Class<?> mapperClass);
 

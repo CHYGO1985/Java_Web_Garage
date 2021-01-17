@@ -22,4 +22,8 @@
         DELETE FROM user where id = #{id}
     </select>
 
+    <select id="insertByCondition" parameterType="com.lagou.pojo.User">
+        INSERT INTO user VALUES (#{id}, #{username}, #{password}, #{birthday});
+    </select>
+
 </mapper>
