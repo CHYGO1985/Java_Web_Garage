@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87e68476-05b0-4e40-b1bf-bb681e7821d9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../IPersistence/src/main/java/com/lagou/sqlSession/DefaultSqlSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/../IPersistence/src/main/java/com/lagou/sqlSession/DefaultSqlSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/config/XMLMapperBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/config/XMLMapperBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/pojo/MappedStatement.class" beforeDir="false" afterPath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/pojo/MappedStatement.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/sqlSession/DefaultSqlSession$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/sqlSession/DefaultSqlSession$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/sqlSession/DefaultSqlSession.class" beforeDir="false" afterPath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/sqlSession/DefaultSqlSession.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/sqlSession/SqlSession.class" beforeDir="false" afterPath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/sqlSession/SqlSession.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/sqlSession/simpleExecutor.class" beforeDir="false" afterPath="$PROJECT_DIR$/../IPersistence/target/classes/com/lagou/sqlSession/simpleExecutor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lagou/test/IPersistenceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lagou/test/IPersistenceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lagou/dao/IUserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lagou/dao/IUserDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lagou/test/IPersistenceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lagou/test/IPersistenceTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,14 +77,16 @@
       <recent name="$PROJECT_DIR$/../IPersistence/src/main/java/com/lagou/config" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.IPersistenceTest.testDeleteId3User">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.IPersistenceTest.test">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -117,36 +123,61 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IPersistence [install]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
-      <MavenSettings>
-        <option name="myGeneralSettings" />
-        <option name="myRunnerSettings" />
-        <option name="myRunnerParameters">
-          <MavenRunnerParameters>
-            <option name="profiles">
-              <set />
-            </option>
-            <option name="goals">
-              <list>
-                <option value="install" />
-              </list>
-            </option>
-            <option name="pomFileName" value="pom.xml" />
-            <option name="profilesMap">
-              <map />
-            </option>
-            <option name="resolveToWorkspace" value="false" />
-            <option name="workingDirPath" value="$PROJECT_DIR$/../IPersistence" />
-          </MavenRunnerParameters>
-        </option>
-      </MavenSettings>
-      <method v="2" />
+    <configuration name="IPersistenceTest.testFindId2User" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IPersistence_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lagou.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lagou.test" />
+      <option name="MAIN_CLASS_NAME" value="com.lagou.test.IPersistenceTest" />
+      <option name="METHOD_NAME" value="testFindId2User" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="IPersistenceTest.testInsertId3User" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IPersistence_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lagou.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lagou.test" />
+      <option name="MAIN_CLASS_NAME" value="com.lagou.test.IPersistenceTest" />
+      <option name="METHOD_NAME" value="testInsertId3User" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="IPersistenceTest.testUpdateId3UernameToLiLei" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IPersistence_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lagou.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lagou.test" />
+      <option name="MAIN_CLASS_NAME" value="com.lagou.test.IPersistenceTest" />
+      <option name="METHOD_NAME" value="testUpdateId3UernameToLiLei" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.IPersistenceTest.testDeleteId3User" />
         <item itemvalue="JUnit.IPersistenceTest.test" />
-        <item itemvalue="Maven.IPersistence [install]" />
+        <item itemvalue="JUnit.IPersistenceTest.testDeleteId3User" />
+        <item itemvalue="JUnit.IPersistenceTest.testUpdateId3UernameToLiLei" />
+        <item itemvalue="JUnit.IPersistenceTest.testInsertId3User" />
+        <item itemvalue="JUnit.IPersistenceTest.testFindId2User" />
       </list>
     </recent_temporary>
   </component>
@@ -188,7 +219,10 @@
       <workItem from="1610802041813" duration="349000" />
       <workItem from="1610853377792" duration="2798000" />
       <workItem from="1610856720424" duration="5771000" />
-      <workItem from="1610863958413" duration="322000" />
+      <workItem from="1610863958413" duration="9499000" />
+      <workItem from="1610884220611" duration="1042000" />
+      <workItem from="1610886103778" duration="1713000" />
+      <workItem from="1610889610841" duration="1347000" />
     </task>
     <servers />
   </component>
@@ -206,6 +240,42 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/../IPersistence/src/main/java/com/lagou/sqlSession/simpleExecutor.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/../IPersistence/src/main/java/com/lagou/sqlSession/simpleExecutor.java</url>
+          <line>114</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/../IPersistence/src/main/java/com/lagou/sqlSession/simpleExecutor.java</url>
+          <line>119</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/../IPersistence/src/main/java/com/lagou/sqlSession/DefaultSqlSession.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/../IPersistence/src/main/java/com/lagou/sqlSession/DefaultSqlSession.java</url>
+          <line>74</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="com.mchange.v2.c3p0.impl.NewProxyPreparedStatement" memberName="parentPooledConnection" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

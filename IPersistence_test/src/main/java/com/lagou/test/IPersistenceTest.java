@@ -16,22 +16,10 @@ public class IPersistenceTest {
 
     @Test
     public void test() throws Exception {
+
         InputStream resourceAsSteam = Resources.getResourceAsSteam("sqlMapConfig.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsSteam);
         SqlSession sqlSession = sqlSessionFactory.openSession();
-
-        //调用
-        /*User user = new User();
-        user.setId(1);
-        user.setUsername("张三");*/
-      /*  User user2 = sqlSession.selectOne("user.selectOne", user);
-
-        System.out.println(user2);*/
-
-       /* List<User> users = sqlSession.selectList("user.selectList");
-        for (User user1 : users) {
-            System.out.println(user1);
-        }*/
 
         IUserDao userDao = sqlSession.getMapper(IUserDao.class);
 
@@ -42,12 +30,73 @@ public class IPersistenceTest {
     }
 
     @Test
+    public void testFindId2User() throws Exception {
+
+        InputStream resourceAsSteam = Resources.getResourceAsSteam("sqlMapConfig.xml");
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsSteam);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        IUserDao userDao = sqlSession.getMapper(IUserDao.class);
+
+        User user = new User();
+        user.setId(2);
+        user.setUsername("tom");
+        User user1 = userDao.findByCondition(user);
+        System.out.println(user1);
+    }
+
+    @Test
+    public void testInsertId3User() throws Exception {
+
+        InputStream resourceAsSteam = Resources.getResourceAsSteam("sqlMapConfig.xml");
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsSteam);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        IUserDao userDao = sqlSession.getMapper(IUserDao.class);
+
+        User user = new User();
+        user.setId(3);
+        user.setUsername("lili");
+        user.setPassword("123");
+        user.setBirthday("2020-12-09");
+        userDao.insertByCondition(user);
+
+        List<User> all = userDao.findAll();
+        Assert.assertEquals(all.size(), 3);
+    }
+
+    @Test
     public void testDeleteId3User() throws Exception {
-        Assert.fail();
+
+        InputStream resourceAsSteam = Resources.getResourceAsSteam("sqlMapConfig.xml");
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsSteam);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        IUserDao userDao = sqlSession.getMapper(IUserDao.class);
+
+        User user = new User();
+        user.setId(3);
+        user.setUsername("test");
+        userDao.deleteByCondition(user);
+
+        List<User> all = userDao.findAll();
+        Assert.assertEquals(all.size(), 2);
     }
 
     @Test
     public void testUpdateId3UernameToLiLei() throws Exception {
-        Assert.fail();
+        InputStream resourceAsSteam = Resources.getResourceAsSteam("sqlMapConfig.xml");
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsSteam);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        IUserDao userDao = sqlSession.getMapper(IUserDao.class);
+
+        User user = new User();
+        user.setId(3);
+        user.setUsername("lilei");
+        userDao.updateByCondition(user);
+
+        User user1 = userDao.findByCondition(user);
+        Assert.assertEquals(user1.getUsername(), "lilei");
     }
 }
