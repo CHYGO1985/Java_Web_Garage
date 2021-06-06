@@ -7,3 +7,7 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 lagou-transfer-ioc-anno/target/tomcat/logs/
+lagou-transfer-ioc-anno/target/
+# Compiled source
+*.class
+*.exe
