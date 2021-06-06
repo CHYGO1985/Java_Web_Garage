@@ -4,6 +4,8 @@ import com.lagou.edu.factory.ProxyFactory;
 import com.lagou.edu.utils.JsonUtils;
 import com.lagou.edu.pojo.Result;
 import com.lagou.edu.service.TransferService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -15,20 +17,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.lagou.edu.service.impl.TransferServiceImpl;
+import com.lagou.edu.service.TransferService;
+
 /**
  * @author 应癫
  */
 @WebServlet(name="transferServlet",urlPatterns = "/transferServlet")
 public class TransferServlet extends HttpServlet {
 
-    private TransferService transferService = null ;
+    // previous with programmatic transaction
+//    private TransferService transferService = null ;
+//
+//    @Override
+//    public void init() throws ServletException {
+//        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
+//        ProxyFactory proxyFactory = (ProxyFactory)webApplicationContext.getBean("proxyFactory");
+//        transferService = (TransferService) proxyFactory.getJdkProxy(webApplicationContext.getBean("transferService")) ;
+//    }
 
-    @Override
-    public void init() throws ServletException {
-        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
-        ProxyFactory proxyFactory = (ProxyFactory)webApplicationContext.getBean("proxyFactory");
-        transferService = (TransferService) proxyFactory.getJdkProxy(webApplicationContext.getBean("transferService")) ;
-    }
+    @Autowired
+    @Qualifier("transferService")
+    private TransferService transferService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
