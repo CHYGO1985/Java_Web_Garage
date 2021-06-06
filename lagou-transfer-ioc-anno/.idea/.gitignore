@@ -6,3 +6,4 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+lagou-transfer-ioc-anno/target/tomcat/logs/
