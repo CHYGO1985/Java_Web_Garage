@@ -33,5 +33,6 @@ public class TranserDecreImpl {
 
         account.setMoney(account.getMoney() - money);
         accountDao.updateAccountByCardNo(account);
+        int c = 1/0;
     }
 }

@@ -61,16 +61,15 @@ public class TransferServiceImpl implements TransferService {
 
         }*/
 
+//        Account from = accountDao.queryAccountByCardNo(fromCardNo);
+//        Account to = accountDao.queryAccountByCardNo(toCardNo);
+//
+//        transferIncreImpl.transferIncre(to, money);
+//        transferDecreImpl.transferDecre(from, money);
+
         try {
             Account from = accountDao.queryAccountByCardNo(fromCardNo);
             Account to = accountDao.queryAccountByCardNo(toCardNo);
-
-//            from.setMoney(from.getMoney()-money);
-//            to.setMoney(to.getMoney()+money);
-
-//            accountDao.updateAccountByCardNo(to);
-//            int c = 1/0;
-//            accountDao.updateAccountByCardNo(from);
 
             transferIncreImpl.transferIncre(to, money);
             transferDecreImpl.transferDecre(from, money);

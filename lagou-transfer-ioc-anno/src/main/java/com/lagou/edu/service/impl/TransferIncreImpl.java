@@ -33,6 +33,6 @@ public class TransferIncreImpl {
 
         account.setMoney(account.getMoney() + money);
         accountDao.updateAccountByCardNo(account);
-//        int c = 1/0;
+
     }
 }
