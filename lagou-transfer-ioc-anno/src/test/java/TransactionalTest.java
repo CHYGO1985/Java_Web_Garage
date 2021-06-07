@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration("classpath:applicationContext.xml")
+@ContextConfiguration("classpath:applicationContext.xml")
 public class TransactionalTest {
 
     @Autowired
@@ -22,6 +22,4 @@ public class TransactionalTest {
     public void tansactionTest1() throws Exception {
         transferService.transfer("622202100001", "622202100002", 100);
     }
-
-
 }
