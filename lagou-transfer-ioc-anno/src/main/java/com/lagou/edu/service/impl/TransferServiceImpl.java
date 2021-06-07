@@ -63,7 +63,7 @@ public class TransferServiceImpl implements TransferService {
             to.setMoney(to.getMoney()+money);
 
             accountDao.updateAccountByCardNo(to);
-            //int c = 1/0;
+            int c = 1/0;
             accountDao.updateAccountByCardNo(from);
         } catch (Exception e) {
             e.printStackTrace();
