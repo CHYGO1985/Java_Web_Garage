@@ -14,6 +14,7 @@ import com.lagou.edu.pojo.Account;
  * @history Jun 7, 2021
  *
  */
+@Service
 public class TranserDecreImpl {
 
     @Autowired

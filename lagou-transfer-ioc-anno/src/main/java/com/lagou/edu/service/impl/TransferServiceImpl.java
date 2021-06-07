@@ -24,6 +24,12 @@ public class TransferServiceImpl implements TransferService {
     @Qualifier("accountDao")
     private AccountDao accountDao;
 
+    @Autowired
+    private TransferIncreImpl transferIncreImpl;
+
+    @Autowired
+    private TranserDecreImpl transferDecreImpl;
+
     @Override
     @Transactional(rollbackFor = { Exception.class })
     public void transfer(String fromCardNo, String toCardNo, int money) throws Exception {
@@ -59,12 +65,15 @@ public class TransferServiceImpl implements TransferService {
             Account from = accountDao.queryAccountByCardNo(fromCardNo);
             Account to = accountDao.queryAccountByCardNo(toCardNo);
 
-            from.setMoney(from.getMoney()-money);
-            to.setMoney(to.getMoney()+money);
+//            from.setMoney(from.getMoney()-money);
+//            to.setMoney(to.getMoney()+money);
 
-            accountDao.updateAccountByCardNo(to);
-            int c = 1/0;
-            accountDao.updateAccountByCardNo(from);
+//            accountDao.updateAccountByCardNo(to);
+//            int c = 1/0;
+//            accountDao.updateAccountByCardNo(from);
+
+            transferIncreImpl.transferIncre(to, money);
+            transferDecreImpl.transferDecre(from, money);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
