@@ -3,12 +3,8 @@ package com.lagou.edu.service.impl;
 import com.lagou.edu.dao.AccountDao;
 import com.lagou.edu.pojo.Account;
 import com.lagou.edu.service.TransferService;
-import com.lagou.edu.utils.ConnectionUtils;
-import com.lagou.edu.utils.TransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +27,8 @@ public class TransferServiceImpl implements TransferService {
     private TranserDecreImpl transferDecreImpl;
 
     @Override
-    @Transactional(rollbackFor = { Exception.class })
+//    @Transactional(rollbackFor = { Exception.class })
+    @Transactional
     public void transfer(String fromCardNo, String toCardNo, int money) throws Exception {
 
         /*try{
@@ -61,23 +58,21 @@ public class TransferServiceImpl implements TransferService {
 
         }*/
 
-//        Account from = accountDao.queryAccountByCardNo(fromCardNo);
-//        Account to = accountDao.queryAccountByCardNo(toCardNo);
+        Account from = accountDao.queryAccountByCardNo(fromCardNo);
+        Account to = accountDao.queryAccountByCardNo(toCardNo);
+
+        transferIncreImpl.transferIncre(to, money);
+        transferDecreImpl.transferDecre(from, money);
+
+//        try {
+//            Account from = accountDao.queryAccountByCardNo(fromCardNo);
+//            Account to = accountDao.queryAccountByCardNo(toCardNo);
 //
-//        transferIncreImpl.transferIncre(to, money);
-//        transferDecreImpl.transferDecre(from, money);
-
-        try {
-            Account from = accountDao.queryAccountByCardNo(fromCardNo);
-            Account to = accountDao.queryAccountByCardNo(toCardNo);
-
-            transferIncreImpl.transferIncre(to, money);
-            transferDecreImpl.transferDecre(from, money);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-
-
+//            transferIncreImpl.transferIncre(to, money);
+//            transferDecreImpl.transferDecre(from, money);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw e;
+//        }
     }
 }

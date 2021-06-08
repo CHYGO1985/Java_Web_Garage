@@ -14,9 +14,8 @@ import java.sql.ResultSet;
 /**
  * @author 应癫
  */
-@Repository("accountDao")
+//@Repository("accountDao")
 public class JdbcAccountDaoImpl implements AccountDao {
-
 
     // @Autowired 按照类型注入
     @Autowired

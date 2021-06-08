@@ -20,6 +20,6 @@ public class TransactionalTest {
 
     @Test
     public void tansactionTest1() throws Exception {
-        transferService.transfer("622202100001", "622202100002", 100);
+        transferService.transfer("6029621011000", "6029621011001", 100);
     }
 }

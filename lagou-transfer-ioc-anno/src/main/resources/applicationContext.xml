@@ -36,9 +36,9 @@
 
     <!--spring声明式事务配置，声明式事务无非就是配置一个aop，只不过有些标签不一样罢了-->
     <!--横切逻辑-->
-<!--    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
-<!--        <constructor-arg name="dataSource" ref="dataSource"></constructor-arg>-->
-<!--    </bean>-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg name="dataSource" ref="dataSource"></constructor-arg>
+    </bean>
 
 
    <!-- <tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -57,6 +57,6 @@
     </aop:config>-->
 
     <!--声明式事务的注解驱动-->
-<!--    <tx:annotation-driven transaction-manager="transactionManager"/>-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>

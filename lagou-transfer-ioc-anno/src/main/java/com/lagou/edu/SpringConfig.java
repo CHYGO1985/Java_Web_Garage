@@ -3,6 +3,7 @@ package com.lagou.edu;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -14,6 +15,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan({"com.lagou.edu"})
 @PropertySource({"classpath:jdbc.properties"})
+@EnableTransactionManagement
 /*@Import()*/
 public class SpringConfig {
 

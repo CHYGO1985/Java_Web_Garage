@@ -1,6 +1,5 @@
 package com.lagou.edu.servlet;
 
-import com.lagou.edu.factory.ProxyFactory;
 import com.lagou.edu.utils.JsonUtils;
 import com.lagou.edu.pojo.Result;
 import com.lagou.edu.service.TransferService;
