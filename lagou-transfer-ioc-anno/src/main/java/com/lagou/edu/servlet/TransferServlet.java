@@ -23,6 +23,10 @@ import com.lagou.edu.service.TransferService;
 
 /**
  * @author 应癫
+ *
+ * @author jingjiejiang
+ * @history
+ * 1. revised transferService as Autowired Jun 9, 2021
  */
 @WebServlet(name="transferServlet",urlPatterns = "/transferServlet")
 public class TransferServlet extends HttpServlet {
