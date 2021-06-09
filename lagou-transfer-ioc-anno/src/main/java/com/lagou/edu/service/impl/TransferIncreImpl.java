@@ -18,7 +18,6 @@ import com.lagou.edu.pojo.Account;
 public class TransferIncreImpl {
 
     @Autowired
-
     AccountDao accountDao;
 
     /**

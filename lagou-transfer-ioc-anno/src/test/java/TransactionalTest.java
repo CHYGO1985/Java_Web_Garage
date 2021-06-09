@@ -20,6 +20,6 @@ public class TransactionalTest {
 
     @Test
     public void tansacBetweenTwoAccountWhenExepThrow() throws Exception {
-        transferService.transfer("6029621011000", "6029621011001", 100);
+        transferService.transfer("6029621011000", "6029621011001", 200);
     }
 }
