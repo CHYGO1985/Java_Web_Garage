@@ -5,6 +5,8 @@ import com.lagou.edu.mvcframework.annotations.LagouAutowired;
 import com.lagou.edu.mvcframework.annotations.LagouController;
 import com.lagou.edu.mvcframework.annotations.LagouRequestMapping;
 import com.lagou.edu.mvcframework.annotations.LagouService;
+import com.lagou.edu.mvcframework.annotations.LagouSecurityForMethod;
+import com.lagou.edu.mvcframework.pojo.AnnoParams;
 import com.lagou.edu.mvcframework.pojo.Handler;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,8 +26,13 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ * @author jingjiejiang
+ * @history Jul 7, 2021
+ *
+ */
 public class LgDispatcherServlet extends HttpServlet {
-
 
     private Properties properties = new Properties();
 
@@ -34,10 +41,12 @@ public class LgDispatcherServlet extends HttpServlet {
     // ioc容器
     private Map<String,Object> ioc = new HashMap<String,Object>();
 
-
     // handlerMapping
     //private Map<String,Method> handlerMapping = now HashMap<>(); // 存储url和Method之间的映射关系
     private List<Handler> handlerMapping = new ArrayList<>();
+
+    private Map<Method, AnnoParams> methodAnnoParamsMap = new HashMap<>();
+
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -298,7 +307,6 @@ public class LgDispatcherServlet extends HttpServlet {
         // 获取所有参数类型数组，这个数组的长度就是我们最后要传入的args数组的长度
         Class<?>[] parameterTypes = handler.getMethod().getParameterTypes();
 
-
         // 根据上述数组长度创建一个新的数组（参数数组，是要传入反射调用的）
         Object[] paraValues = new Object[parameterTypes.length];
 
@@ -323,7 +331,7 @@ public class LgDispatcherServlet extends HttpServlet {
 
         int requestIndex = handler.getParamIndexMapping().get(HttpServletRequest.class.getSimpleName()); // 0
         paraValues[requestIndex] = req;
-        
+
         int responseIndex = handler.getParamIndexMapping().get(HttpServletResponse.class.getSimpleName()); // 1
         paraValues[responseIndex] = resp;
 
