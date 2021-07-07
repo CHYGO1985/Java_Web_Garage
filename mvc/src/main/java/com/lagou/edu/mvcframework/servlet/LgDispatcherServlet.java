@@ -307,12 +307,25 @@ public class LgDispatcherServlet extends HttpServlet {
         // 反射调用，需要传入对象，需要传入参数，此处无法完成调用，没有把对象缓存起来，也没有参数！！！！改造initHandlerMapping();
 //        method.invoke() //
 
-
         // 根据uri获取到能够处理当前请求的hanlder（从handlermapping中（list））
         Handler handler = getHandler(req);
 
         if(handler == null) {
             resp.getWriter().write("404 not found");
+            return;
+        }
+
+        // check if the user can continue via checking with @security parameters
+        String reqUsername = req.getParameter("username");
+        AnnoParams annoParams = methodAnnoParamsMap.get(handler.getMethod());
+        Set<String> authUsernames = null;
+
+        if (annoParams != null) {
+            authUsernames = annoParams.getUsernames();
+        }
+
+        if (authUsernames != null && !authUsernames.contains(reqUsername)) {
+            resp.getWriter().write("The user is not authorised");
             return;
         }
 
