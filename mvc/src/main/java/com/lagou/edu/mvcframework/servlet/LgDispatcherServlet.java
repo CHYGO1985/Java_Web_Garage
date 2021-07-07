@@ -48,7 +48,6 @@ public class LgDispatcherServlet extends HttpServlet {
         // 2 扫描相关的类，扫描注解
         doScan(properties.getProperty("scanPackage"));
 
-
         // 3 初始化bean对象（实现ioc容器，基于注解）
         doInstance();
 
