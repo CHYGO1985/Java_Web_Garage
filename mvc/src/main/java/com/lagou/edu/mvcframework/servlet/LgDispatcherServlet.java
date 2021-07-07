@@ -116,14 +116,15 @@ public class LgDispatcherServlet extends HttpServlet {
                 // if has been already checked that whether the curret class is controller
                 // if(!aClass.isAnnotationPresent(LagouController.class)) {continue;}
                 LagouSecurityForMethod securityAnno = method.getAnnotation(LagouSecurityForMethod.class);
-                if (securityAnno == null) { continue; }
+                if (securityAnno != null) {
 
-                String[] usernames = securityAnno.usernames();
-                AnnoParams annoParams = new AnnoParams(
-                        new HashSet<>(Arrays.asList(usernames))
-                );
+                    String[] usernames = securityAnno.usernames();
+                    AnnoParams annoParams = new AnnoParams(
+                            new HashSet<>(Arrays.asList(usernames))
+                    );
 
-                methodAnnoParamsMap.put(method, annoParams);
+                    methodAnnoParamsMap.put(method, annoParams);
+                }
 
                 // 计算方法的参数位置信息  // query(HttpServletRequest request, HttpServletResponse response,String name)
                 Parameter[] parameters = method.getParameters();
@@ -291,12 +292,10 @@ public class LgDispatcherServlet extends HttpServlet {
 
     }
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req,resp);
     }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
