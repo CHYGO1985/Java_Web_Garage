@@ -110,6 +110,20 @@ public class LgDispatcherServlet extends HttpServlet {
                 // 把method所有信息及url封装为一个Handler
                 Handler handler = new Handler(entry.getValue(),method, Pattern.compile(url));
 
+                // check the method belongs to handler method, if so, build <method : anno parameters>
+                // methodAnnoParamsMap
+
+                // if has been already checked that whether the curret class is controller
+                // if(!aClass.isAnnotationPresent(LagouController.class)) {continue;}
+                LagouSecurityForMethod securityAnno = method.getAnnotation(LagouSecurityForMethod.class);
+                if (securityAnno == null) { continue; }
+
+                String[] usernames = securityAnno.usernames();
+                AnnoParams annoParams = new AnnoParams(
+                        new HashSet<>(Arrays.asList(usernames))
+                );
+
+                methodAnnoParamsMap.put(method, annoParams);
 
                 // 计算方法的参数位置信息  // query(HttpServletRequest request, HttpServletResponse response,String name)
                 Parameter[] parameters = method.getParameters();
@@ -124,7 +138,6 @@ public class LgDispatcherServlet extends HttpServlet {
                     }
 
                 }
-
 
                 // 建立url和method之间的映射关系（map缓存起来）
                 handlerMapping.add(handler);
