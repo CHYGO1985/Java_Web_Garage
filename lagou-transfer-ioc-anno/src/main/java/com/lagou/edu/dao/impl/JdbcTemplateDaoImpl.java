@@ -11,7 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * @author 应癫
+ *
+ * @author jingjiejiang
+ * @history Jun 9, 2021
+ *
  */
 @Repository("accountDao")
 public class JdbcTemplateDaoImpl implements AccountDao {
