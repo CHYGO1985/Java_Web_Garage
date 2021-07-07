@@ -220,11 +220,6 @@ public class LgDispatcherServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-
-
-
-
-
     }
 
 
@@ -258,7 +253,6 @@ public class LgDispatcherServlet extends HttpServlet {
             }
             
         }
-
 
     }
 
@@ -327,15 +321,11 @@ public class LgDispatcherServlet extends HttpServlet {
 
         }
 
-
         int requestIndex = handler.getParamIndexMapping().get(HttpServletRequest.class.getSimpleName()); // 0
         paraValues[requestIndex] = req;
-
-
+        
         int responseIndex = handler.getParamIndexMapping().get(HttpServletResponse.class.getSimpleName()); // 1
         paraValues[responseIndex] = resp;
-
-
 
 
         // 最终调用handler的method属性
@@ -346,7 +336,6 @@ public class LgDispatcherServlet extends HttpServlet {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-
 
     }
 
