@@ -8,6 +8,7 @@
 /httpRequests/
 lagou-transfer-ioc-anno/target/tomcat/logs/
 lagou-transfer-ioc-anno/target/
+lagou-transfer-ioc-anno/.idea/
 # Compiled source
 *.class
 *.exe
