@@ -27,15 +27,39 @@
                 </div>
             </article>
         </div>
-<!--        <div>-->
-<!--            <ul>-->
-<!--                &lt;!&ndash; first page &ndash;&gt;-->
-<!--                <li>-->
-<!--                    <a th:href="'/index?pageNum=0'">首页</a>-->
-<!--                </li>-->
-<!--                &lt;!&ndash; previous page&ndash;&gt;-->
-<!--            </ul>-->
-<!--        </div>-->
+        <div>
+            <ul>
+                <!-- first page -->
+                <li>
+                    <a th:href="'/index?pageNum=0'">首页</a>
+                </li>
+                <!-- previous page-->
+                <li th:if="${page.getPageNum() > 1}">
+                    <a th:href="'/index?pageNum=' + ${page.getPageNum() - 1}" th:text="上一页"></a>
+                </li>
+
+                <!-- total num of articles -->
+                <li>
+                    <span th:text="'总条数: ' + ${page.getTotal()}"></span>
+                </li>
+
+                <!-- total num of pages-->
+                <li>
+                    <span th:text="'总页数: ' + ${page.getPages()}"></span>
+                </li>
+
+                <!-- next page -->
+                <li th:if="${page.iterator().hasNext()}">
+                    <a th:href="'/index?pageNum=' + ${page.getPageNum() + 1}" th:text="下一页"></a>
+                </li>
+
+                <!-- last page -->
+                <li>
+                    <a th:href="'/index?pageNum=' + ${page.getPages()}">尾页</a>
+                </li>
+
+            </ul>
+        </div>
 
     </div>
     <!-- 博主信息描述 -->
