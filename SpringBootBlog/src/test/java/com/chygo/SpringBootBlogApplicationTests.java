@@ -2,6 +2,7 @@ package com.chygo;
 
 import com.chygo.pojo.Article;
 import com.chygo.service.ArticleService;
+import com.github.pagehelper.Page;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,6 +36,12 @@ class SpringBootBlogApplicationTests {
     @Test
     public void testGetArticles() {
         List<Article> articleList = articleService.getArticles();
+    }
+
+    @Test
+    public void testFindArticlesByPage() {
+        Page<Article> articlePage = articleService.findArticlesByPage(0, 2);
+        assertEquals(articlePage.getPages(), 3);
     }
 
 }
