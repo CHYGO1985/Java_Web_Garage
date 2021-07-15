@@ -30,16 +30,4 @@ public class ArticleController {
 
         return articleService.getArticles();
     }
-
-    @RequestMapping("/index")
-    public String findArticlesByPage(Model model,
-                                     @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
-                                     @RequestParam(value = "pageSize", defaultValue = "2") int pageSize) {
-
-        Page<Article> articlePage = articleService.findArticlesByPage(pageNum, pageSize);
-        model.addAttribute("page", articlePage);
-
-        return "index";
-    }
-
 }
