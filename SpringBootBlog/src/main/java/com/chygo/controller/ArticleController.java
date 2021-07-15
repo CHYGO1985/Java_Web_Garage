@@ -22,7 +22,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @RequestMapping("/index")
+    @RequestMapping("/articles")
     public List<Article> getAllArticles() {
 
         return articleService.getArticles();
