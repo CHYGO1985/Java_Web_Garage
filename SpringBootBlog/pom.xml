@@ -41,6 +41,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Add pagehelper dependency-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+
         <!-- Add auto restart dependency-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
