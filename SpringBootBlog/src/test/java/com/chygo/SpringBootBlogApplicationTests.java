@@ -1,4 +1,4 @@
-package com.example.springbootblog;
+package com.chygo;
 
 import com.chygo.pojo.Article;
 import com.chygo.service.ArticleService;
