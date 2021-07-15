@@ -8,6 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ *
+ * The controller for article service.
+ *
+ * @author jingjiejiang
+ * @history Jul 15, 2021
+ *
+ */
 @RestController
 public class ArticleController {
 
