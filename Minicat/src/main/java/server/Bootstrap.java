@@ -3,6 +3,7 @@ package server;
 import util.HttpProtocalUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,6 +20,15 @@ public class Bootstrap {
 
     /** socket listening port */
     private int port = 8080;
+    private ServerSocket serverSocket;
+
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    public void initServerSocket () throws IOException {
+        serverSocket = new ServerSocket(port);
+    }
 
     public int getPort() {
         return port;
@@ -31,15 +41,13 @@ public class Bootstrap {
     /**
      *
      * Minicat initialization
+     * v1.0: visit localhost:8080, then return "Hello Minicat!"
+     *
      */
-    public void start() throws IOException {
+    public void startV1() throws IOException {
 
-        /**
-         * v1.0: visit localhost:8080, then return "Hello Minicat!"
-         */
-
-        ServerSocket serverSocket = new ServerSocket(port);
-        System.out.println("======> Minicat start on port: " + port);
+        initServerSocket();
+        System.out.println("======> Minicat v1 start on port: " + port);
 
         while(true) {
             Socket socket = serverSocket.accept();
@@ -55,6 +63,25 @@ public class Bootstrap {
 
     /**
      *
+     * Minicat initialization
+     * v2.0: wrap Request and Response object, and return html static resource file
+     *
+     */
+    public void startV2() throws IOException {
+
+        initServerSocket();
+        System.out.println("======> Minicat v2 start on port: " + port);
+
+        while (true) {
+
+            Socket socket = serverSocket.accept();
+            InputStream inputStream = socket.getInputStream();
+        }
+    }
+
+
+    /**
+     *
      * Main method of minicat.
      *
      */
@@ -62,7 +89,7 @@ public class Bootstrap {
 
         Bootstrap bootstrap = new Bootstrap();
         try {
-            bootstrap.start();
+            bootstrap.startV1();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
