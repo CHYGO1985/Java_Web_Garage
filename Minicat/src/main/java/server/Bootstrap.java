@@ -1,5 +1,7 @@
 package server;
 
+import controller.Request;
+import controller.Response;
 import util.HttpProtocalUtil;
 
 import java.io.IOException;
@@ -76,6 +78,12 @@ public class Bootstrap {
 
             Socket socket = serverSocket.accept();
             InputStream inputStream = socket.getInputStream();
+
+            Request request = new Request(inputStream);
+            Response response = new Response(socket.getOutputStream());
+
+            response.outputHtml(request.getUrl());
+            socket.close();
         }
     }
 
@@ -89,7 +97,7 @@ public class Bootstrap {
 
         Bootstrap bootstrap = new Bootstrap();
         try {
-            bootstrap.startV1();
+            bootstrap.startV2();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

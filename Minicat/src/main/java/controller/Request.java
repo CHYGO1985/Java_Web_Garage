@@ -58,6 +58,14 @@ public class Request {
         System.out.println(" ====>> url: " + url);
     }
 
+    /**
+     *
+     * Get the params in the first like of request. "GET / HTTP/1.1"
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
     public String[] getReqFirstLineParams(InputStream inputStream) throws IOException {
 
         this.inputStream = inputStream;
