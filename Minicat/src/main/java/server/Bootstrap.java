@@ -2,7 +2,7 @@ package server;
 
 import controller.Request;
 import controller.Response;
-import util.HttpProtocalUtil;
+import util.HttpProtocolUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +56,7 @@ public class Bootstrap {
             // once we have the socket, we use it to accept the request and then get the output stream
             OutputStream outputStream = socket.getOutputStream();
             String data = "Hello Minicat!";
-            String responseText = HttpProtocalUtil.getHttpHeader200(data.getBytes().length) + data;
+            String responseText = HttpProtocolUtil.getHttpHeader200(data.getBytes().length) + data;
             outputStream.write(responseText.getBytes());
             socket.close();
         }

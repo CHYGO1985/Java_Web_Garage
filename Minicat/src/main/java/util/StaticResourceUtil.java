@@ -47,7 +47,7 @@ public class StaticResourceUtil {
 
         int resSize = count;
         // first write header, then payload
-        outputStream.write(HttpProtocalUtil.getHttpHeader200(resSize).getBytes());
+        outputStream.write(HttpProtocolUtil.getHttpHeader200(resSize).getBytes());
 
         // read content and then output
         long written = 0; // read content length

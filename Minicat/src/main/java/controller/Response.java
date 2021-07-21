@@ -1,6 +1,6 @@
 package controller;
 
-import util.HttpProtocalUtil;
+import util.HttpProtocolUtil;
 import util.StaticResourceUtil;
 
 import java.io.File;
@@ -54,7 +54,7 @@ public class Response {
             StaticResourceUtil.outputStaticResource(new FileInputStream(file), outputStream);
         } else {
             // outout 404
-            output(HttpProtocalUtil.getHttpHeader404());
+            output(HttpProtocolUtil.getHttpHeader404());
         }
     }
 }

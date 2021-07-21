@@ -8,7 +8,7 @@ package util;
  * @history Jul 20, 2021
  *
  */
-public class HttpProtocalUtil {
+public class HttpProtocolUtil {
 
     /**
      *
