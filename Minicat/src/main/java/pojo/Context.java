@@ -13,7 +13,7 @@ public class Context {
     private String dir;
     private String url;
 
-    public Context(String dir, String url) {
+    public Context(String url, String dir) {
         this.dir = dir;
         this.url = url;
     }

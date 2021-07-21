@@ -2,6 +2,7 @@ package server;
 
 import controller.Request;
 import controller.Response;
+import mapper.ContextWrapperMapper;
 import mapper.HostContextMapper;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -240,6 +241,11 @@ public class Bootstrap {
     public void startV6() throws Exception {
 
         HostContextMapper hostContextMapper = new HostContextMapper();
+
+        ContextWrapperMapper contextWrapperMapper = new ContextWrapperMapper(
+                hostContextMapper.getContextMap()
+        );
+
         // load config from web.xml
         loadServlet();
 
