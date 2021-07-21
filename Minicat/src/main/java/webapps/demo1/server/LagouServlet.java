@@ -27,7 +27,7 @@ public class LagouServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        String content = "<h1>LagouServlet v1 get</h1>";
+        String content = "<h1>LagouServlet demo1 get</h1>";
 
         try {
             response.output((HttpProtocolUtil.getHttpHeader200(content.getBytes().length)) + content);
@@ -39,7 +39,7 @@ public class LagouServlet extends HttpServlet {
     @Override
     public void doPost(Request request, Response response) {
 
-        String content = "<h1>LagouServlet post</h1>";
+        String content = "<h1>LagouServlet demo1 post</h1>";
         try {
             response.output((HttpProtocolUtil.getHttpHeader200(content.getBytes().length) + content));
         } catch (IOException e) {
