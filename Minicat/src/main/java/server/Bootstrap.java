@@ -2,6 +2,7 @@ package server;
 
 import controller.Request;
 import controller.Response;
+import mapper.HostContextMapper;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -229,6 +230,33 @@ public class Bootstrap {
         }
     }
 
+
+    /**
+     *
+     * Minicat initialization
+     *
+     * v6.0: use thread pool to deliver dynamic resource (servlet)
+     *
+     */
+    public void startV6() throws Exception {
+
+        HostContextMapper hostContextMapper = new HostContextMapper();
+        // load config from web.xml
+        loadServlet();
+
+        initServerSocket();
+        System.out.println("======> Minicat v5 start on port: " + port);
+
+        ThreadPoolExecutor threadPoolExecutor = getThreadPoolExecutor();
+
+        while (true) {
+            Socket socket = serverSocket.accept();
+            RequestProcessor requestProcessor = new RequestProcessor(socket, servletMap);
+
+            threadPoolExecutor.execute(requestProcessor);
+        }
+    }
+
     private ThreadPoolExecutor getThreadPoolExecutor() {
 
         int corePoolSize = 10;
@@ -262,7 +290,7 @@ public class Bootstrap {
 
         Bootstrap bootstrap = new Bootstrap();
         try {
-            bootstrap.startV5();
+            bootstrap.startV6();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
