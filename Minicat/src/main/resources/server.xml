@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<server>
+    <Service>
+        <Connector port="8080"/>
+        <Engine>
+            <Host name="localhost" appBase="/Users/jingjiejiang/Documents/My_Project/Java_Web_Garage/Minicat/src/main/java/webapps">
+            </Host>
+        </Engine>
+    </Service>
+</server>

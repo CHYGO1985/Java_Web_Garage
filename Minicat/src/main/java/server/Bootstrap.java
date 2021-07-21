@@ -252,7 +252,7 @@ public class Bootstrap {
 
         return threadPoolExecutor;
     }
-    
+
     /**
      *
      * Main method of minicat.
