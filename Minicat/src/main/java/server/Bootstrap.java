@@ -7,6 +7,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.dom4j.Document;
 import service.HttpServlet;
+import service.RequestProcessor;
 import util.HttpProtocolUtil;
 
 import java.io.IOException;
@@ -108,7 +109,7 @@ public class Bootstrap {
         loadServlet();
 
         initServerSocket();
-        System.out.println("======> Minicat v2 start on port: " + port);
+        System.out.println("======> Minicat v3 start on port: " + port);
 
         while (true) {
 
@@ -181,6 +182,30 @@ public class Bootstrap {
 
     /**
      *
+     * Minicat initialization
+     *
+     * v4.0: multi threads to deliver dynamic resource (servlet)
+     *
+     */
+    public void startV4() throws Exception {
+
+        // load config from web.xml
+        loadServlet();
+
+        initServerSocket();
+        System.out.println("======> Minicat v4 start on port: " + port);
+
+        while (true) {
+            Socket socket = serverSocket.accept();
+            RequestProcessor requestProcessor = new RequestProcessor(socket, servletMap);
+
+            requestProcessor.start();
+        }
+    }
+
+
+    /**
+     *
      * Main method of minicat.
      *
      */
@@ -188,7 +213,7 @@ public class Bootstrap {
 
         Bootstrap bootstrap = new Bootstrap();
         try {
-            bootstrap.startV3();
+            bootstrap.startV4();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

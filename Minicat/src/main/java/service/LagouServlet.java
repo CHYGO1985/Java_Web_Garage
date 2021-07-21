@@ -20,6 +20,12 @@ public class LagouServlet extends HttpServlet {
     @Override
     public void doGet(Request request, Response response) {
 
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         String content = "<h1>LagouServlet get</h1>";
 
         try {
