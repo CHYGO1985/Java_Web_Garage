@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  *
@@ -203,7 +204,55 @@ public class Bootstrap {
         }
     }
 
+    /**
+     *
+     * Minicat initialization
+     *
+     * v5.0: use thread pool to deliver dynamic resource (servlet)
+     *
+     */
+    public void startV5() throws Exception {
 
+        // load config from web.xml
+        loadServlet();
+
+        initServerSocket();
+        System.out.println("======> Minicat v5 start on port: " + port);
+
+        ThreadPoolExecutor threadPoolExecutor = getThreadPoolExecutor();
+
+        while (true) {
+            Socket socket = serverSocket.accept();
+            RequestProcessor requestProcessor = new RequestProcessor(socket, servletMap);
+
+            threadPoolExecutor.execute(requestProcessor);
+        }
+    }
+
+    private ThreadPoolExecutor getThreadPoolExecutor() {
+
+        int corePoolSize = 10;
+        int maximumPoolSize = 50;
+        long keepAliveTime = 100L;
+
+        TimeUnit unit = TimeUnit.SECONDS;
+        BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(50);
+        ThreadFactory threadFactory = Executors.defaultThreadFactory();
+        RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();
+
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+                corePoolSize,
+                maximumPoolSize,
+                keepAliveTime,
+                unit,
+                workQueue,
+                threadFactory,
+                handler
+        );
+
+        return threadPoolExecutor;
+    }
+    
     /**
      *
      * Main method of minicat.
@@ -213,7 +262,7 @@ public class Bootstrap {
 
         Bootstrap bootstrap = new Bootstrap();
         try {
-            bootstrap.startV4();
+            bootstrap.startV5();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
