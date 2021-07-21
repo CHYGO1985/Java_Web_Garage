@@ -20,7 +20,7 @@ public class LagouServlet extends HttpServlet {
     @Override
     public void doGet(Request request, Response response) {
 
-        String content = "<h1>LagouServlet getß</h1>";
+        String content = "<h1>LagouServlet get</h1>";
 
         try {
             response.output((HttpProtocolUtil.getHttpHeader200(content.getBytes().length)) + content);
