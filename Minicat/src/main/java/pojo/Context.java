@@ -10,13 +10,27 @@ package pojo;
  */
 public class Context {
 
-    private String dirPattern;
+    private String dir;
+    private String url;
 
-    public String getDirPattern() {
-        return dirPattern;
+    public Context(String dir, String url) {
+        this.dir = dir;
+        this.url = url;
     }
 
-    public void setDirPattern(String dirPattern) {
-        this.dirPattern = dirPattern;
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

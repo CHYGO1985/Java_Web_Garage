@@ -8,10 +8,9 @@ import org.dom4j.Document;
 import pojo.Context;
 import pojo.Host;
 
+import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -23,18 +22,51 @@ import java.util.Map;
  */
 public class HostContextMapper {
 
+    // map: localhost : <localhost, webapps dir>
     private Map<String, Host> hostMap;
-    private Map<String, Context> hostContextMap;
+    // map: localhost : demo1 (name of context)
+    private Map<String, Set<String>> hostContextMap;
+    // map: demo1 : context obj
+    private Map<String, Context> contextMap;
 
     public HostContextMapper() {
 
         hostMap = new HashMap<>();
         hostContextMap = new HashMap<>();
-
+        contextMap = new HashMap<>();
         loadHost();
     }
 
-    public void loadHost() {
+    public Map<String, Context> getContextMap() {
+        return contextMap;
+    }
+
+    public void setContextMap(Map<String, Context> contextMap) {
+        this.contextMap = contextMap;
+    }
+
+    public Map<String, Set<String>> getHostContextMap() {
+        return hostContextMap;
+    }
+
+    public void setHostContextMap(Map<String, Set<String>> hostContextMap) {
+        this.hostContextMap = hostContextMap;
+    }
+
+    public Map<String, Host> getHostMap() {
+        return hostMap;
+    }
+
+    public void setHostMap(Map<String, Host> hostMap) {
+        this.hostMap = hostMap;
+    }
+
+    /**
+     *
+     * Laod host name and webapps dir from server.xml.
+     *
+     */
+    private void loadHost() {
 
         InputStream resAsStram = this.getClass().getClassLoader().getResourceAsStream("server.xml");
         SAXReader saxReader = new SAXReader();
@@ -59,18 +91,37 @@ public class HostContextMapper {
 
                 Host host = new Host(hostName, appDir);
                 hostMap.put(hostName, host);
-            }
 
+                buildHostCxtMap(hostName, appDir);
+            }
         } catch (DocumentException e) {
             e.printStackTrace();
         }
     }
 
-    public Map<String, Context> getHostContextMap() {
-        return hostContextMap;
-    }
+    /**
+     *
+     * Build <host name : set of context name> (localhost: (demo1, demo2)) map
+     * and <context name : context path> (webapps: .../webapps/demo1) map
+     *
+     * @param hostName
+     * @param appDir
+     *
+     */
+    private void buildHostCxtMap(String hostName, String appDir) {
 
-    public void setHostContextMap(Map<String, Context> hostContextMap) {
-        this.hostContextMap = hostContextMap;
+        File webAppsDir = new File(appDir);
+
+        File[] fileList = webAppsDir.listFiles();
+        if (fileList != null) {
+            for (File file : fileList) {
+                Set<String> cxtNameSet = hostContextMap.getOrDefault(hostName, new HashSet<>());
+                cxtNameSet.add(file.getName());
+                hostContextMap.put(hostName, cxtNameSet);
+                Context context = new Context(file.getName(),
+                        file.getAbsolutePath());
+                contextMap.put(file.getName(), context);
+            }
+        }
     }
 }

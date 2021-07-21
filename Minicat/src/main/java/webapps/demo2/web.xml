@@ -2,7 +2,7 @@
 <web-app>
     <servlet>
         <servlet-name>lagou</servlet-name>
-        <servlet-class>swebapps.demo2.server.LagouServlet.java</servlet-class>
+        <servlet-class>swebapps.demo2.server.LagouServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
