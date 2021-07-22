@@ -7,6 +7,6 @@
 
     <servlet-mapping>
         <servlet-name>lagou</servlet-name>
-        <url-pattern>/lagou</url-pattern>
+        <url-pattern>/demo1/lagou</url-pattern>
     </servlet-mapping>
 </web-app>

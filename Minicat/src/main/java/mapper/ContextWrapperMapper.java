@@ -5,6 +5,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import pojo.Context;
+import service.HttpServlet;
+import service.Servlet;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +15,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  *
@@ -25,12 +26,16 @@ import java.util.Map;
  */
 public class ContextWrapperMapper {
 
+    // map : <context name : wrapper name>
     Map<String, String> contextWrapperMap;
     Map<String, Context> contextMap;
+    // map: </demo1/lagou : servlet>
+    Map<String, Servlet> urlServletMap;
 
     public ContextWrapperMapper(Map<String, Context> contextMap) {
         this.contextWrapperMap = new HashMap<>();
         this.contextMap = contextMap;
+        this.urlServletMap = new HashMap<>();
         buildCxtWrapperMap();
     }
 
@@ -43,11 +48,11 @@ public class ContextWrapperMapper {
             cxtName = entry.getKey();
             // web.xml file path
             String filePath = entry.getValue().getDir();
-            loadWrapper(filePath);
+            loadWrapper(cxtName, filePath);
         }
     }
 
-    private void loadWrapper(String directory) {
+    private void loadWrapper(String cxtName, String directory) {
 
         String seperator = System.getProperty("file.separator");
 
@@ -69,12 +74,32 @@ public class ContextWrapperMapper {
             for (int idx = 0; idx < selectNodes.size(); idx ++) {
 
                 Element element = selectNodes.get(idx);
+                // <servlet-name>lagou</servlet-name>
                 Element servletNameEle = (Element) element.selectSingleNode("servlet-name");
                 String servletMame = servletNameEle.getStringValue();
 
-            }
+                // get context name and wrapper mapper
+                contextWrapperMap.put(cxtName, servletMame);
 
+                // <servlet-class>webapps.demo1.server.LagouServlet</servlet-class>
+                Element servletClassEle = (Element) element.selectSingleNode("servlet-class");
+                String servletClass = servletClassEle.getStringValue();
+
+                // according to servlet-name to find url-pattern
+                Element servletMapping = (Element) rootElement.selectSingleNode(
+                        "/web-app/servlet-mapping[servlet-name='" + servletMame + "']");
+
+                String urlPattern = servletMapping.selectSingleNode("url-pattern").getStringValue();
+                urlServletMap.put(urlPattern, (HttpServlet) Class.forName(servletClass).newInstance());
+                int test = 0;
+            }
         } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

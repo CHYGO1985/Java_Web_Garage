@@ -16,7 +16,6 @@ import java.io.IOException;
  */
 public class LagouServlet extends HttpServlet {
 
-
     @Override
     public void doGet(Request request, Response response) {
 
