@@ -26,14 +26,11 @@ import java.util.Map;
  */
 public class ContextWrapperMapper {
 
-    // map : <context name : wrapper name>
-    Map<String, String> contextWrapperMap;
     Map<String, Context> contextMap;
     // map: </demo1/lagou : servlet>
     Map<String, HttpServlet> urlServletMap;
 
     public ContextWrapperMapper(Map<String, Context> contextMap) {
-        this.contextWrapperMap = new HashMap<>();
         this.contextMap = contextMap;
         this.urlServletMap = new HashMap<>();
         buildCxtWrapperMap();
@@ -85,9 +82,6 @@ public class ContextWrapperMapper {
                 // <servlet-name>lagou</servlet-name>
                 Element servletNameEle = (Element) element.selectSingleNode("servlet-name");
                 String servletMame = servletNameEle.getStringValue();
-
-                // get context name and wrapper mapper
-                contextWrapperMap.put(cxtName, servletMame);
 
                 // <servlet-class>webapps.demo1.server.LagouServlet</servlet-class>
                 Element servletClassEle = (Element) element.selectSingleNode("servlet-class");
