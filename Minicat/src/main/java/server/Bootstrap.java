@@ -248,11 +248,8 @@ public class Bootstrap {
 
         servletMap = contextWrapperMapper.getUrlServletMap();
 
-        // load config from web.xml
-//        loadServlet();
-
         initServerSocket();
-        System.out.println("======> Minicat v5 start on port: " + port);
+        System.out.println("======> Minicat v6 start on port: " + port);
 
         ThreadPoolExecutor threadPoolExecutor = getThreadPoolExecutor();
 
