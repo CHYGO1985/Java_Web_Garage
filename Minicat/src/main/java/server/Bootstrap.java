@@ -246,8 +246,10 @@ public class Bootstrap {
                 hostContextMapper.getContextMap()
         );
 
+        servletMap = contextWrapperMapper.getUrlServletMap();
+
         // load config from web.xml
-        loadServlet();
+//        loadServlet();
 
         initServerSocket();
         System.out.println("======> Minicat v5 start on port: " + port);

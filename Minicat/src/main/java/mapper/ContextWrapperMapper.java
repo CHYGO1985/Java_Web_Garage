@@ -30,13 +30,21 @@ public class ContextWrapperMapper {
     Map<String, String> contextWrapperMap;
     Map<String, Context> contextMap;
     // map: </demo1/lagou : servlet>
-    Map<String, Servlet> urlServletMap;
+    Map<String, HttpServlet> urlServletMap;
 
     public ContextWrapperMapper(Map<String, Context> contextMap) {
         this.contextWrapperMap = new HashMap<>();
         this.contextMap = contextMap;
         this.urlServletMap = new HashMap<>();
         buildCxtWrapperMap();
+    }
+
+    public Map<String, HttpServlet> getUrlServletMap() {
+        return urlServletMap;
+    }
+
+    public void setUrlServletMap(Map<String, HttpServlet> urlServletMap) {
+        this.urlServletMap = urlServletMap;
     }
 
     private void buildCxtWrapperMap() {
