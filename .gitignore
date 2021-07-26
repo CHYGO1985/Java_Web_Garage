@@ -172,5 +172,7 @@ lagou-transfer-ioc-anno/.idea/libraries/Maven__org_springframework_spring_tx_5_3
 #Minicat
 /Minicat/.idea/
 /Minicat/target/
-
+#loginproject
+/loginproject/.mvn/
+/loginproject/target/
 
