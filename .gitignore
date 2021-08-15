@@ -175,4 +175,11 @@ lagou-transfer-ioc-anno/.idea/libraries/Maven__org_springframework_spring_tx_5_3
 #loginproject
 /loginproject/.mvn/
 /loginproject/target/
+#lg-rpc
+/lg-rpc/.idea/
+/lg-rpc/lg-rpc-api/target/
+/lg-rpc/lg-rpc-consumer/target/
+/lg-rpc/lg-rpc-provider/target/
+
+
 
