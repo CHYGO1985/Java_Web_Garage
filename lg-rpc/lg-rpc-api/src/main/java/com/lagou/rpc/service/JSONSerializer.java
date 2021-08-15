@@ -1,4 +1,4 @@
-package com.lagou.rpc.consumer.service;
+package com.lagou.rpc.service;
 
 import com.alibaba.fastjson.JSON;
 import com.lagou.rpc.api.Serializer;

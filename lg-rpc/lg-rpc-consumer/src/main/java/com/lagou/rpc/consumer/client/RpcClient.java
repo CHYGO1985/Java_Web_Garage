@@ -1,13 +1,16 @@
 package com.lagou.rpc.consumer.client;
 
+import com.lagou.rpc.common.RpcRequest;
+import com.lagou.rpc.common.RpcResponse;
 import com.lagou.rpc.consumer.handler.RpcClientHandler;
+import com.lagou.rpc.service.JSONSerializer;
+import com.lagou.rpc.service.RpcDecoder;
+import com.lagou.rpc.service.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -59,8 +62,12 @@ public class RpcClient {
                         protected void initChannel(SocketChannel channel) throws Exception {
                             ChannelPipeline pipeline = channel.pipeline();
                             //String类型编解码器
-                            pipeline.addLast(new StringDecoder());
-                            pipeline.addLast(new StringEncoder());
+//                            pipeline.addLast(new StringDecoder());
+//                            pipeline.addLast(new StringEncoder());
+
+                            // Add JSON Decoder/Encoder
+                            pipeline.addLast(new RpcDecoder(RpcResponse.class, new JSONSerializer()));
+                            pipeline.addLast(new RpcEncoder(RpcRequest.class, new JSONSerializer()));
                             //添加客户端处理类
                             pipeline.addLast(rpcClientHandler);
                         }
