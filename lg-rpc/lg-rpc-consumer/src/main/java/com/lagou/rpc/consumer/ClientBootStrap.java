@@ -2,7 +2,6 @@ package com.lagou.rpc.consumer;
 
 import com.lagou.rpc.api.IUserService;
 import com.lagou.rpc.consumer.proxy.RpcClientProxy;
-import com.lagou.rpc.pojo.User;
 
 /**
  * 测试类
@@ -10,7 +9,8 @@ import com.lagou.rpc.pojo.User;
 public class ClientBootStrap {
     public static void main(String[] args) {
         IUserService userService = (IUserService) RpcClientProxy.createProxy(IUserService.class);
-        User user = userService.getById(1);
-        System.out.println(user);
+//        User user = userService.getById(1);
+        String res = userService.getByIdReturnStr(1);
+        System.out.println(res);
     }
 }

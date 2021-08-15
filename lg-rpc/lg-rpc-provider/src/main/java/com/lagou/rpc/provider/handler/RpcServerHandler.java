@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.lagou.rpc.common.RpcRequest;
 import com.lagou.rpc.common.RpcResponse;
 import com.lagou.rpc.provider.anno.RpcService;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -27,6 +28,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * 4.解析请求中的方法名称. 参数类型 参数信息
  * 5.反射调用bean的方法
  * 6.给客户端进行响应
+ *
+ * @author jingjiejiang
+ * @history Aug 15, 2021
+ * 1. add channelRead method for object msg.
+ * 2. add handler met
+ *
  */
 @Component
 @ChannelHandler.Sharable
@@ -72,14 +79,41 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> implem
         rpcResponse.setRequestId(rpcRequest.getRequestId());
         try {
             //业务处理
-            rpcResponse.setResult(handler(rpcRequest));
+            rpcResponse.setResult(handler1(rpcRequest));
         } catch (Exception exception) {
             exception.printStackTrace();
             rpcResponse.setError(exception.getMessage());
         }
         //6.给客户端进行响应
         channelHandlerContext.writeAndFlush(JSON.toJSONString(rpcResponse));
+    }
 
+    /**
+     *
+     * Read object from the channel.
+     *
+     * @param channelHandlerContext
+     * @param msg
+     * @throws Exception
+     */
+    @Override
+    public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+
+        RpcRequest rpcRequest = (RpcRequest) msg;
+        RpcResponse rpcResponse = new RpcResponse();
+        rpcResponse.setRequestId(rpcRequest.getRequestId());
+        try {
+            rpcResponse.setResult(handler(rpcRequest));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            rpcResponse.setError(exception.getMessage());
+        }
+
+        ChannelFuture cf = channelHandlerContext.writeAndFlush(JSON.toJSONString(rpcResponse));
+        // this is for checking if the reason of writing fails
+        if (!cf.isSuccess()) {
+            System.out.println("Send failed: " + cf.cause());
+        }
     }
 
     /**
@@ -87,7 +121,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> implem
      *
      * @return
      */
-    public Object handler(RpcRequest rpcRequest) throws InvocationTargetException {
+    public Object handler1(RpcRequest rpcRequest) throws InvocationTargetException {
         // 3.根据传递过来的beanName从缓存中查找到对应的bean
         Object serviceBean = SERVICE_INSTANCE_MAP.get(rpcRequest.getClassName());
         if (serviceBean == null) {
@@ -104,5 +138,26 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> implem
         return method.invoke(serviceBean, parameters);
     }
 
+    /**
+     *
+     * Business logic handling.
+     *
+     */
+    public Object handler(RpcRequest rpcRequest) throws InvocationTargetException {
 
+        Object serviceBean = SERVICE_INSTANCE_MAP.get(rpcRequest.getClassName());
+        if (serviceBean == null) {
+            throw new RuntimeException("根据beanName找不到服务,beanName:" + rpcRequest.getClassName());
+        }
+
+        // interpret method name, parameters type and info
+        Class<?> serviceBeanClass = serviceBean.getClass();
+        String methodName = rpcRequest.getMethodName();
+        Class<?>[] parameterTypes = rpcRequest.getParameterTypes();
+        Object[] parameters = rpcRequest.getParameters();
+        // reflection of calling bean method
+        FastClass fastClass = FastClass.create(serviceBeanClass);
+        FastMethod fastMethod = fastClass.getMethod(methodName, parameterTypes);
+        return fastMethod.invoke(serviceBean, parameters);
+    }
 }

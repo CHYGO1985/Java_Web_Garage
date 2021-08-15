@@ -9,6 +9,11 @@ import java.util.concurrent.Callable;
  * 客户端处理类
  * 1.发送消息
  * 2.接收消息
+ *
+ * @author jingjiejiang
+ * @history Aug 15, 2021
+ * 1. add requestObjMsg for send as an object.
+ *
  */
 public class RpcClientHandler extends SimpleChannelInboundHandler<String> implements Callable {
 
@@ -19,8 +24,14 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
     //服务端的消息
     String responseMsg;
 
+    private Object requestObjMsg;
+
     public void setRequestMsg(String requestMsg) {
         this.requestMsg = requestMsg;
+    }
+
+    public void setRequestObjMsg(Object requestObjMsg) {
+        this.requestObjMsg = requestObjMsg;
     }
 
     /**
@@ -54,11 +65,23 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
      * @return
      * @throws Exception
      */
-    @Override
-    public synchronized Object call() throws Exception {
+    public synchronized Object call1() throws Exception {
         //消息发送
         context.writeAndFlush(requestMsg);
         //线程等待
+        wait();
+        return responseMsg;
+    }
+
+    /**
+     *
+     * Send an object to server side.
+     *
+     */
+    @Override
+    public synchronized Object call() throws Exception {
+
+        context.writeAndFlush(requestObjMsg);
         wait();
         return responseMsg;
     }

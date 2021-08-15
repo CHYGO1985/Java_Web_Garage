@@ -14,4 +14,13 @@ public interface IUserService {
      * @return
      */
     User getById(int id);
+
+    /**
+     *
+     * Search user by ID and return status as string
+     *
+     * @param id
+     * @return
+     */
+    String getByIdReturnStr(int id);
 }

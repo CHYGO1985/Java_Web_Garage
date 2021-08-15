@@ -16,6 +16,11 @@ import java.util.UUID;
  * 2.创建RpcClient对象
  * 3.发送消息
  * 4.返回结果
+ *
+ * @author jingjiejiang
+ * @history Aug 15, 2021
+ * 1. revised invoke() method, send as object not string.
+ *
  */
 public class RpcClientProxy {
 
@@ -35,14 +40,15 @@ public class RpcClientProxy {
                         RpcClient rpcClient = new RpcClient("127.0.0.1", 8899);
                         try {
                             //3.发送消息
-                            Object responseMsg = rpcClient.send(JSON.toJSONString(rpcRequest));
+                            Object responseMsg = rpcClient.send(rpcRequest);
                             RpcResponse rpcResponse = JSON.parseObject(responseMsg.toString(), RpcResponse.class);
                             if (rpcResponse.getError() != null) {
                                 throw new RuntimeException(rpcResponse.getError());
                             }
                             //4.返回结果
                             Object result = rpcResponse.getResult();
-                            return JSON.parseObject(result.toString(), method.getReturnType());
+//                            return JSON.parseObject(result.toString(), method.getReturnType());
+                            return result.toString();
                         } catch (Exception e) {
                             throw e;
                         } finally {

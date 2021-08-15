@@ -1,16 +1,15 @@
 package com.lagou.rpc.consumer.client;
 
 import com.lagou.rpc.common.RpcRequest;
-import com.lagou.rpc.common.RpcResponse;
 import com.lagou.rpc.consumer.handler.RpcClientHandler;
 import com.lagou.rpc.service.JSONSerializer;
-import com.lagou.rpc.service.RpcDecoder;
 import com.lagou.rpc.service.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -22,6 +21,11 @@ import java.util.concurrent.Future;
  * 1.连接Netty服务端
  * 2.提供给调用者主动关闭资源的方法
  * 3.提供消息发送的方法
+ *
+ * @author jingjiejiang
+ * @history Aug 15, 2021
+ * 1. add a new send() method for send as an object.
+ *
  */
 public class RpcClient {
 
@@ -66,7 +70,7 @@ public class RpcClient {
 //                            pipeline.addLast(new StringEncoder());
 
                             // Add JSON Decoder/Encoder
-                            pipeline.addLast(new RpcDecoder(RpcResponse.class, new JSONSerializer()));
+                            pipeline.addLast(new StringDecoder());
                             pipeline.addLast(new RpcEncoder(RpcRequest.class, new JSONSerializer()));
                             //添加客户端处理类
                             pipeline.addLast(rpcClientHandler);
@@ -100,8 +104,20 @@ public class RpcClient {
     /**
      * 提供消息发送的方法
      */
-    public Object send(String msg) throws ExecutionException, InterruptedException {
+    public Object send1(String msg) throws ExecutionException, InterruptedException {
         rpcClientHandler.setRequestMsg(msg);
+        Future submit = executorService.submit(rpcClientHandler);
+        return submit.get();
+    }
+
+    /**
+     *
+     * send message as an object.
+     *
+     */
+    public Object send(Object msg) throws ExecutionException, InterruptedException {
+
+        rpcClientHandler.setRequestObjMsg(msg);
         Future submit = executorService.submit(rpcClientHandler);
         return submit.get();
     }
