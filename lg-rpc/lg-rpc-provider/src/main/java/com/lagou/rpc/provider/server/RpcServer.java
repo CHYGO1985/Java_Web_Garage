@@ -18,6 +18,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * 启动类
+ *
+ * @author jingjiejiang
+ * @history Aug 15, 2021
+ * 1. add decoder/encoder
+ *
  */
 @Service
 public class RpcServer implements DisposableBean {
