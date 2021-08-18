@@ -18,10 +18,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * 客户端
- * 1.连接Netty服务端
- * 2.提供给调用者主动关闭资源的方法
- * 3.提供消息发送的方法
+ *
+ * RPC client.
+ *
+ * 1.Connect to Netty server.
+ * 2.Provide the invoker a way to close resources
+ * 3.Provide methods to send message to server.
  *
  * @author jingjiejiang
  * @history Aug 15, 2021
@@ -49,15 +51,18 @@ public class RpcClient {
     }
 
     /**
-     * 初始化方法-连接Netty服务端
+     *
+     * Init method -- connect to Netty server.
+     *
      */
     public void initClient() {
+
         try {
-            //1.创建线程组
+            // 1.Create thread pool
             group = new NioEventLoopGroup();
-            //2.创建启动助手
+            // 2.Create bootstrap
             Bootstrap bootstrap = new Bootstrap();
-            //3.设置参数
+            // 3.Config Bootstrap
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
                     .option(ChannelOption.SO_KEEPALIVE, Boolean.TRUE)
@@ -66,18 +71,19 @@ public class RpcClient {
                         @Override
                         protected void initChannel(SocketChannel channel) throws Exception {
                             ChannelPipeline pipeline = channel.pipeline();
-                            //String类型编解码器
+
+                            // Encoder/Decoder for String
 //                            pipeline.addLast(new StringDecoder());
 //                            pipeline.addLast(new StringEncoder());
 
                             // Add JSON Decoder/Encoder
                             pipeline.addLast(new RpcDecoder(RpcResponse.class, new JSONSerializer()));
                             pipeline.addLast(new RpcEncoder(RpcRequest.class, new JSONSerializer()));
-                            //添加客户端处理类
+                            // Add client handler
                             pipeline.addLast(rpcClientHandler);
                         }
                     });
-            //4.连接Netty服务端
+            // 4. Connect to Netty server
             channel = bootstrap.connect(ip, port).sync().channel();
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -91,7 +97,9 @@ public class RpcClient {
     }
 
     /**
-     * 提供给调用者主动关闭资源的方法
+     *
+     * Provide method to actively close resources
+     *
      */
     public void close() {
         if (channel != null) {
@@ -100,15 +108,6 @@ public class RpcClient {
         if (group != null) {
             group.shutdownGracefully();
         }
-    }
-
-    /**
-     * 提供消息发送的方法
-     */
-    public Object send1(String msg) throws ExecutionException, InterruptedException {
-        rpcClientHandler.setRequestMsg(msg);
-        Future submit = executorService.submit(rpcClientHandler);
-        return submit.get();
     }
 
     /**
