@@ -20,6 +20,9 @@ import java.util.UUID;
  * @history Aug 15, 2021
  * 1. revised invoke() method, send as object not string.
  *
+ * Aug 18, 2021
+ * 1. revised invoke() method, to receive message as JSON.
+ *
  */
 public class RpcClientProxy {
 
@@ -47,7 +50,7 @@ public class RpcClientProxy {
                             }
                             //4.返回结果
                             Object result = rpcResponse.getResult();
-//                            return JSON.parseObject(result.toString(), method.getReturnType());
+
                             return result.toString();
                         } catch (Exception e) {
                             throw e;

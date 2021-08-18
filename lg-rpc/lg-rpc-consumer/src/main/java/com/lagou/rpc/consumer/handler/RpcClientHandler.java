@@ -14,6 +14,8 @@ import java.util.concurrent.Callable;
  * @history Aug 15, 2021
  * 1. add requestObjMsg for send as an object.
  *
+ * Aug 18, 2021
+ * 1. add channelRead() method for receiving message as Object.
  */
 public class RpcClientHandler extends SimpleChannelInboundHandler<String> implements Callable {
 
@@ -69,7 +71,7 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
      * @throws Exception
      */
     @Override
-    public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+    public synchronized void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
 
         responseObjMsg = msg;
         notify();

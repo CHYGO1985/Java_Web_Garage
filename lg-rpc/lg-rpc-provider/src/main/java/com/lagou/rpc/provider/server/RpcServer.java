@@ -1,9 +1,11 @@
 package com.lagou.rpc.provider.server;
 
 import com.lagou.rpc.common.RpcRequest;
+import com.lagou.rpc.common.RpcResponse;
 import com.lagou.rpc.provider.handler.RpcServerHandler;
 import com.lagou.rpc.service.JSONSerializer;
 import com.lagou.rpc.service.RpcDecoder;
+import com.lagou.rpc.service.RpcEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,7 +13,6 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringEncoder;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ import org.springframework.stereotype.Service;
  * @author jingjiejiang
  * @history Aug 15, 2021
  * 1. add decoder/encoder
+ *
+ * Aug 21, 2021
+ * 1. Change encoder to JSON encoder.
  *
  */
 @Service
@@ -54,7 +58,7 @@ public class RpcServer implements DisposableBean {
 
                             // Add JSON Decoder/Encoder
                             pipeline.addLast(new RpcDecoder(RpcRequest.class, new JSONSerializer()));
-                            pipeline.addLast(new StringEncoder());
+                            pipeline.addLast(new RpcEncoder(RpcResponse.class, new JSONSerializer()));
 
                             //业务处理类
                             pipeline.addLast(rpcServerHandler);
