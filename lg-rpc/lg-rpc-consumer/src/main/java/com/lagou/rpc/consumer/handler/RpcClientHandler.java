@@ -25,6 +25,7 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
     String responseMsg;
 
     private Object requestObjMsg;
+    private Object responseObjMsg;
 
     public void setRequestMsg(String requestMsg) {
         this.requestMsg = requestMsg;
@@ -60,6 +61,21 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
     }
 
     /**
+     *
+     * Read object from the channel.
+     *
+     * @param channelHandlerContext
+     * @param msg
+     * @throws Exception
+     */
+    @Override
+    public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+
+        responseObjMsg = msg;
+        notify();
+    }
+
+    /**
      * 发送消息到服务端
      *
      * @return
@@ -83,6 +99,6 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
 
         context.writeAndFlush(requestObjMsg);
         wait();
-        return responseMsg;
+        return responseObjMsg;
     }
 }

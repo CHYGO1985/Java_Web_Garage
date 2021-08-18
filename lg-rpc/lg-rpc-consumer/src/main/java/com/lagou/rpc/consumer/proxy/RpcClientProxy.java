@@ -1,6 +1,5 @@
 package com.lagou.rpc.consumer.proxy;
 
-import com.alibaba.fastjson.JSON;
 import com.lagou.rpc.common.RpcRequest;
 import com.lagou.rpc.common.RpcResponse;
 import com.lagou.rpc.consumer.client.RpcClient;
@@ -41,7 +40,8 @@ public class RpcClientProxy {
                         try {
                             //3.发送消息
                             Object responseMsg = rpcClient.send(rpcRequest);
-                            RpcResponse rpcResponse = JSON.parseObject(responseMsg.toString(), RpcResponse.class);
+//                            RpcResponse rpcResponse = JSON.parseObject(responseMsg.toString(), RpcResponse.class);
+                            RpcResponse rpcResponse = (RpcResponse) responseMsg;
                             if (rpcResponse.getError() != null) {
                                 throw new RuntimeException(rpcResponse.getError());
                             }
