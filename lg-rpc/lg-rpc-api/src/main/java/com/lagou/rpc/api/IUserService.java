@@ -3,12 +3,16 @@ package com.lagou.rpc.api;
 import com.lagou.rpc.pojo.User;
 
 /**
- * 用户服务
+ * The interface of User Service
+ *
+ * @author jingjiejiang
+ * @history Aug 18, 2021
+ *
  */
 public interface IUserService {
 
     /**
-     * 根据ID查询用户
+     * Get user by ID.
      *
      * @param id
      * @return

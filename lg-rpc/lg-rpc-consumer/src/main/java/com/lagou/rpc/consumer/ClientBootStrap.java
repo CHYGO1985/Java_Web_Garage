@@ -4,7 +4,11 @@ import com.lagou.rpc.api.IUserService;
 import com.lagou.rpc.consumer.proxy.RpcClientProxy;
 
 /**
- * 测试类
+ * For testing.
+ *
+ * @author jingjiejiang
+ * @history Aug 18, 2021
+ *
  */
 public class ClientBootStrap {
     public static void main(String[] args) {

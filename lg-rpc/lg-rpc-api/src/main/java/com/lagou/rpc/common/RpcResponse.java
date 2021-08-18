@@ -3,23 +3,34 @@ package com.lagou.rpc.common;
 import lombok.Data;
 
 /**
- * 封装的响应对象
+ *
+ * The class for responses.
+ *
+ * @author jingjiejiang
+ * @history Aug 18, 2021
+ *
  */
 @Data
 public class RpcResponse {
 
     /**
-     * 响应ID
+     *
+     * The response ID. (Same as request ID).
+     *
      */
     private String requestId;
 
     /**
-     * 错误信息
+     *
+     * The error message.
+     *
      */
     private String error;
 
     /**
-     * 返回的结果
+     *
+     * The returned result.
+     *
      */
     private Object result;
 

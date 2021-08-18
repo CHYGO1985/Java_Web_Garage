@@ -2,32 +2,41 @@ package com.lagou.rpc.common;
 
 import lombok.Data;
 
-import java.util.Arrays;
-
 /**
- * 封装的请求对象
+ *
+ * The class for requests.
+ *
+ * @author jingjiejiang
+ * @history Aug 18, 2021
+ *
  */
 @Data
 public class RpcRequest {
 
     /**
-     * 请求对象的ID
+     * The ID of request.
      */
     private String requestId;
+
     /**
-     * 类名
+     * The name of the class
      */
     private String className;
+
     /**
-     * 方法名
+     * The method name.
      */
     private String methodName;
+
     /**
-     * 参数类型
+     * The parameters type.
+     *
      */
     private Class<?>[] parameterTypes;
+
     /**
-     * 入参
+     * The parameters.
+     *
      */
     private Object[] parameters;
 
