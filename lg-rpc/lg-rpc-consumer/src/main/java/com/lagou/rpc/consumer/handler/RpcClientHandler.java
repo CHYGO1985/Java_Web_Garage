@@ -6,9 +6,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.concurrent.Callable;
 
 /**
- * 客户端处理类
- * 1.发送消息
- * 2.接收消息
+ *
+ * The client handler class.
+ * 1.Send message
+ * 2.Receive message
  *
  * @author jingjiejiang
  * @history Aug 15, 2021
@@ -16,17 +17,20 @@ import java.util.concurrent.Callable;
  *
  * Aug 18, 2021
  * 1. add channelRead() method for receiving message as Object.
+ *
  */
 public class RpcClientHandler extends SimpleChannelInboundHandler<String> implements Callable {
 
-    ChannelHandlerContext context;
-    //发送的消息
-    String requestMsg;
+    private ChannelHandlerContext context;
 
-    //服务端的消息
-    String responseMsg;
+    // Request message as String type (String channel)
+    private String requestMsg;
+    // Response message as String type (String channel)
+    private String responseMsg;
 
+    // Request message as Object (JSON channel)
     private Object requestObjMsg;
+    // Response message as Object (JSON channel)
     private Object responseObjMsg;
 
     public void setRequestMsg(String requestMsg) {
@@ -38,10 +42,12 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
     }
 
     /**
-     * 通道连接就绪事件
+     *
+     * Channel ready event
      *
      * @param ctx
      * @throws Exception
+     *
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -49,11 +55,13 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
     }
 
     /**
-     * 通道读取就绪事件
+     *
+     * Channel read ready event.
      *
      * @param channelHandlerContext
      * @param msg
      * @throws Exception
+     *
      */
     @Override
     protected synchronized void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
@@ -75,20 +83,6 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<String> implem
 
         responseObjMsg = msg;
         notify();
-    }
-
-    /**
-     * 发送消息到服务端
-     *
-     * @return
-     * @throws Exception
-     */
-    public synchronized Object call1() throws Exception {
-        //消息发送
-        context.writeAndFlush(requestMsg);
-        //线程等待
-        wait();
-        return responseMsg;
     }
 
     /**

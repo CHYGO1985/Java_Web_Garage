@@ -12,6 +12,7 @@ import com.lagou.rpc.consumer.proxy.RpcClientProxy;
  */
 public class ClientBootStrap {
     public static void main(String[] args) {
+
         IUserService userService = (IUserService) RpcClientProxy.createProxy(IUserService.class);
 //        User user = userService.getById(1);
         String res = userService.getByIdReturnStr(1);
