@@ -8,6 +8,14 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * User service implementation.
+ *
+ * @author jingjiejiang
+ * @history Aug 19, 2021
+ *
+ */
 @RpcService
 @Service
 public class UserServiceImpl implements IUserService {
@@ -33,10 +41,10 @@ public class UserServiceImpl implements IUserService {
     private void initUserMap() {
         User user1 = new User();
         user1.setId(1);
-        user1.setName("张三");
+        user1.setName("Zhang San");
         User user2 = new User();
         user2.setId(2);
-        user2.setName("李四");
+        user2.setName("Li Si");
         userMap.put(user1.getId(), user1);
         userMap.put(user2.getId(), user2);
     }

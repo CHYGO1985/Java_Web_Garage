@@ -6,6 +6,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ *
+ *  Main method for server
+ *
+ * @author jingjiejiang
+ * @history Aug 19, 2021
+ *
+ */
 @SpringBootApplication
 public class ServerBootstrapApplication implements CommandLineRunner {
 

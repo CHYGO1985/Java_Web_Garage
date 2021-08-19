@@ -21,13 +21,15 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 服务端业务处理类
- * 1.将标有@RpcService注解的bean缓存
- * 2.接收客户端请求
- * 3.根据传递过来的beanName从缓存中查找到对应的bean
- * 4.解析请求中的方法名称. 参数类型 参数信息
- * 5.反射调用bean的方法
- * 6.给客户端进行响应
+ *
+ * Rpc service handler.
+ *
+ * 1. Put @RpcService into bean cache
+ * 2. Receive request from client side
+ * 3. According to beanName and find the correspond bean in cache
+ * 4. Interpret method name, param types and parameters info from request message
+ * 5. Invoke bean method via reflection
+ * 6. Send response to client
  *
  * @author jingjiejiang
  * @history Aug 15, 2021
@@ -45,22 +47,25 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> implem
     private static final Map SERVICE_INSTANCE_MAP = new ConcurrentHashMap();
 
     /**
-     * 1.将标有@RpcService注解的bean缓存
+     *
+     * Put @RpcService into bean cache
      *
      * @param applicationContext
      * @throws BeansException
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+
         Map<String, Object> serviceMap = applicationContext.getBeansWithAnnotation(RpcService.class);
         if (serviceMap != null && serviceMap.size() > 0) {
             Set<Map.Entry<String, Object>> entries = serviceMap.entrySet();
             for (Map.Entry<String, Object> item : entries) {
                 Object serviceBean = item.getValue();
                 if (serviceBean.getClass().getInterfaces().length == 0) {
-                    throw new RuntimeException("服务必须实现接口");
+                    throw new RuntimeException("The service must implement an interface.");
                 }
-                //默认取第一个接口作为缓存bean的名称
+
+                // Get the first interface as the bean name by default
                 String name = serviceBean.getClass().getInterfaces()[0].getName();
                 SERVICE_INSTANCE_MAP.put(name, serviceBean);
             }
@@ -68,26 +73,30 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> implem
     }
 
     /**
-     * 通道读取就绪事件
+     *
+     * Channel ready for reading event
      *
      * @param channelHandlerContext
      * @param msg
      * @throws Exception
+     *
      */
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
-        //1.接收客户端请求- 将msg转化RpcRequest对象
+
+        // Receive client request -- transform msg to RpcRequest object
         RpcRequest rpcRequest = JSON.parseObject(msg, RpcRequest.class);
         RpcResponse rpcResponse = new RpcResponse();
         rpcResponse.setRequestId(rpcRequest.getRequestId());
         try {
-            //业务处理
+            // business logic handling
             rpcResponse.setResult(handler(rpcRequest));
         } catch (Exception exception) {
             exception.printStackTrace();
             rpcResponse.setError(exception.getMessage());
         }
-        //6.给客户端进行响应
+
+        // 6. send response to client
         channelHandlerContext.writeAndFlush(JSON.toJSONString(rpcResponse));
     }
 
@@ -122,24 +131,28 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> implem
     }
 
     /**
-     * 业务处理逻辑
+     *
+     * Business logic.
      *
      * @return
      */
     public Object handler(RpcRequest rpcRequest) throws InvocationTargetException {
-        // 3.根据传递过来的beanName从缓存中查找到对应的bean
+
+        // 3. According to beanName and find the correspond bean in cache
         Object serviceBean = SERVICE_INSTANCE_MAP.get(rpcRequest.getClassName());
         if (serviceBean == null) {
-            throw new RuntimeException("根据beanName找不到服务,beanName:" + rpcRequest.getClassName());
+            throw new RuntimeException("Cannot find the service via provided beanName, beanName:"
+                    + rpcRequest.getClassName());
         }
-        //4.解析请求中的方法名称. 参数类型 参数信息
+        // 4. Interpret method name, param types and parameters info from request message
         Class<?> serviceBeanClass = serviceBean.getClass();
         String methodName = rpcRequest.getMethodName();
         Class<?>[] parameterTypes = rpcRequest.getParameterTypes();
         Object[] parameters = rpcRequest.getParameters();
-        //5.反射调用bean的方法- CGLIB反射调用
+        // 5. Invoke bean method via reflection (via CGLIB)
         FastClass fastClass = FastClass.create(serviceBeanClass);
         FastMethod method = fastClass.getMethod(methodName, parameterTypes);
+
         return method.invoke(serviceBean, parameters);
     }
 }

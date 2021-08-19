@@ -18,13 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 启动类
+ *
+ * The server class.
  *
  * @author jingjiejiang
  * @history Aug 15, 2021
  * 1. add decoder/encoder
  *
- * Aug 21, 2021
+ * Aug 18, 2021
  * 1. Change encoder to JSON encoder.
  *
  */
@@ -40,19 +41,19 @@ public class RpcServer implements DisposableBean {
 
     public void startServer(String ip, int port) {
         try {
-            //1. 创建线程组
+            // 1. Create thread pool.
             bossGroup = new NioEventLoopGroup(1);
             workerGroup = new NioEventLoopGroup();
-            //2. 创建服务端启动助手
+            // 2. Creat server bootstrap
             ServerBootstrap serverBootstrap = new ServerBootstrap();
-            //3. 设置参数
+            // 3. Config server
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel channel) throws Exception {
                             ChannelPipeline pipeline = channel.pipeline();
-                            //添加String的编解码器
+                            // Add encoder/decoder for String msg
 //                            pipeline.addLast(new StringDecoder());
 //                            pipeline.addLast(new StringEncoder());
 
@@ -60,13 +61,14 @@ public class RpcServer implements DisposableBean {
                             pipeline.addLast(new RpcDecoder(RpcRequest.class, new JSONSerializer()));
                             pipeline.addLast(new RpcEncoder(RpcResponse.class, new JSONSerializer()));
 
-                            //业务处理类
+                            // Business logic
                             pipeline.addLast(rpcServerHandler);
                         }
                     });
-            //4.绑定端口
+
+            // 4. Bind port
             ChannelFuture sync = serverBootstrap.bind(ip, port).sync();
-            System.out.println("==========服务端启动成功==========");
+            System.out.println("========== Server is successfully launched ==========");
             sync.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -82,6 +84,12 @@ public class RpcServer implements DisposableBean {
     }
 
 
+    /**
+     *
+     * Close resources.
+     *
+     * @throws Exception
+     */
     @Override
     public void destroy() throws Exception {
         if (bossGroup != null) {
