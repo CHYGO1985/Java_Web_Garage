@@ -3,7 +3,7 @@ package com.lagou.rpc.provider.handler;
 import com.alibaba.fastjson.JSON;
 import com.lagou.rpc.common.RpcRequest;
 import com.lagou.rpc.common.RpcResponse;
-import com.lagou.rpc.provider.anno.RpcService;
+import com.lagou.rpc.annotation.RpcService;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

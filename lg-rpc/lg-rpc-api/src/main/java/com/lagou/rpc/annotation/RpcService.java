@@ -1,4 +1,4 @@
-package com.lagou.rpc.provider.anno;
+package com.lagou.rpc.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

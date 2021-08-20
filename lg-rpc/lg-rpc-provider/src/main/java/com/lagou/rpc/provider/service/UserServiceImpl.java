@@ -2,7 +2,7 @@ package com.lagou.rpc.provider.service;
 
 import com.lagou.rpc.api.IUserService;
 import com.lagou.rpc.pojo.User;
-import com.lagou.rpc.provider.anno.RpcService;
+import com.lagou.rpc.annotation.RpcService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
