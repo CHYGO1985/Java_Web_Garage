@@ -9,7 +9,7 @@ import com.lagou.rpc.pojo.User;
  * @history Aug 18, 2021
  *
  */
-public interface IUserService {
+public interface UserService {
 
     /**
      * Get user by ID.

@@ -1,6 +1,6 @@
 package com.lagou.rpc.provider.service;
 
-import com.lagou.rpc.api.IUserService;
+import com.lagou.rpc.api.UserService;
 import com.lagou.rpc.pojo.User;
 import com.lagou.rpc.annotation.RpcService;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @RpcService
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements UserService {
     Map<Object, User> userMap = new HashMap();
 
     @Override
