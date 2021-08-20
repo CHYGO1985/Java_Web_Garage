@@ -1,6 +1,7 @@
 package com.lagou.rpc.provider;
 
 import com.lagou.rpc.provider.server.RpcServer;
+import com.lagou.rpc.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,7 +30,7 @@ public class ServerBootstrapApplication implements CommandLineRunner {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                rpcServer.startServer("127.0.01", 8899);
+                rpcServer.startServer(Util.SERVER_IP, Util.SERVER_PORT_NUM);
             }
         }).start();
     }

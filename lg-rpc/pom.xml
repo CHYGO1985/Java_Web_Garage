@@ -12,6 +12,7 @@
         <module>lg-rpc-consumer</module>
         <module>lg-rpc-provider</module>
         <module>lg-rpc-api</module>
+        <module>lg-rpc-registry</module>
     </modules>
 
     <parent>
