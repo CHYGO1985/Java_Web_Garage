@@ -1,7 +1,7 @@
 package com.lagou.rpc.provider.server;
 
-import com.lagou.rpc.common.RpcRequest;
-import com.lagou.rpc.common.RpcResponse;
+import com.lagou.rpc.pojo.RpcRequest;
+import com.lagou.rpc.pojo.RpcResponse;
 import com.lagou.rpc.provider.handler.RpcServerHandler;
 import com.lagou.rpc.service.JSONSerializer;
 import com.lagou.rpc.service.RpcDecoder;

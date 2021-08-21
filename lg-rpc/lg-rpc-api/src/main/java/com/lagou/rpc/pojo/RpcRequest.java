@@ -1,4 +1,4 @@
-package com.lagou.rpc.common;
+package com.lagou.rpc.pojo;
 
 import lombok.Data;
 
