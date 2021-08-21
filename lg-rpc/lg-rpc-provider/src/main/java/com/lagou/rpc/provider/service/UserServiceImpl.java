@@ -38,6 +38,11 @@ public class UserServiceImpl implements UserService {
         return userMap.get(id) != null ? "success" : "fail";
     }
 
+    /**
+     *
+     * This is for mocking data.
+     * 
+     */
     private void initUserMap() {
         User user1 = new User();
         user1.setId(1);
