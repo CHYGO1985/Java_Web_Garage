@@ -131,7 +131,7 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
         try {
             byte[] dataBytes = zNodeData.getBytes(Util.UTF_8);
             zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath(zNodePath, dataBytes);
-        } catch (KeeperException.NodeExistsException) {
+        } catch (KeeperException.NodeExistsException e) {
         } catch (UnsupportedEncodingException e) {
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -148,8 +148,8 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
     protected void createEhemeralZNodeWithData(String zNodePath, String zNodeData) {
 
         try {
-            byte[] dataByte = zNodeData.getBytes(Util.UTF_8);
-            zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(zNodePath, zNodeData);
+            byte[] dataBytes = zNodeData.getBytes(Util.UTF_8);
+            zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(zNodePath, dataBytes);
         } catch (UnsupportedEncodingException e) {
         } catch (Exception e) {
             throw new IllegalStateException(e.getMessage(), e);
