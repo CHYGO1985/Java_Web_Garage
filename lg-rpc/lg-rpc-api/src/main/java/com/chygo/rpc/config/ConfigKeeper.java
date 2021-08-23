@@ -18,9 +18,9 @@ public class ConfigKeeper {
     // Report interval in the unit of second
     private int interval;
     // Client
-    private boolean clintEnd;
+    private boolean isClintEnd;
     // Server
-    private boolean serverEnd;
+    private boolean isServerEnd;
 
     private ConfigKeeper() {
     }
@@ -76,20 +76,20 @@ public class ConfigKeeper {
     }
 
     public boolean isClintEnd() {
-        return clintEnd;
+        return isClintEnd;
     }
 
     public void setClintEnd(boolean clintEnd) {
-        this.clintEnd = clintEnd;
-        this.serverEnd = !clintEnd;
+        this.isClintEnd = clintEnd;
+        this.isServerEnd = !clintEnd;
     }
 
     public boolean isServerEnd() {
-        return serverEnd;
+        return isServerEnd;
     }
 
     public void setServerEnd(boolean serverEnd) {
-        this.serverEnd = serverEnd;
-        this.clintEnd = !serverEnd;
+        this.isServerEnd = serverEnd;
+        this.isClintEnd = !serverEnd;
     }
 }
