@@ -3,8 +3,10 @@ package com.chygo.rpc.regsitry.handler;
 import com.chygo.rpc.api.NodeChangeListener;
 import com.chygo.rpc.api.RpcRegistryHandler;
 import com.chygo.rpc.util.Util;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.state.ConnectionState;
 import org.apache.curator.retry.RetryNTimes;
 import org.apache.zookeeper.CreateMode;
@@ -33,7 +35,10 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
     private static final int RETRY_TIMES = 1;
     // unit : ms
     private static final int SLEEP_BTW_RETRY = 1000;
+
     private static final String PROVIDER_NAME = "provider";
+    private static final String IP_PORT_NUM_CONNECTOR = ":";
+
 
     private static final List<NodeChangeListener> listenerList = new ArrayList<>();
     // ZooKeeper server url: 127.0.0.1:2181
@@ -66,24 +71,108 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
         // Timely report for client
     }
 
+    /**
+     *
+     * Register a server on ZooKeeper.
+     * Register means create a ZNode which names include specified service, server ip and server port num.
+     *
+     * @param service : com.chygo.rpc.api.SimpleResponse
+     * @param ip
+     * @param port
+     * @return
+     */
     @Override
     public boolean register(String service, String ip, int port) {
-        return false;
+
+        String zNodePathPrefix = genZNodePathPrefix(service);
+        if (!isZNodePathExist(zNodePathPrefix)) {
+            createZNodeWithoutData(zNodePathPrefix, false);
+        }
+
+        // full node path: /lg-edu-rpc/com.lagou.edu.api.UserService/provider/127.0.0.1:8990
+        String zNodePath = zNodePathPrefix + Util.PACKAGE_PATH_DELIMITER + ip + IP_PORT_NUM_CONNECTOR + port;
+        createZNodeWithoutData(zNodePath, true);
+
+        return true;
     }
 
+    /**
+     *
+     * Find the address of providers and add them to service list.
+     *
+     * @param servcie
+     * @return
+     */
     @Override
     public List<String> discover(String servcie) {
-        return null;
+
+        // parent node: /lg-edu-rpc/com.lagou.edu.api.UserService/provider
+        String zNodePathPrefix = genZNodePathPrefix(servcie);
+
+        try {
+            // if the service list is empty, get it from zkClient, then update via watcher
+//            if (Collection)
+            if (CollectionUtils.isEmpty(serviceList)) {
+                System.out.println("Get service address from register center ...");
+                // sub node: 127.0.0.1:8991
+                serviceList = zkClient.getChildren().forPath(zNodePathPrefix);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        this.registerWatcher(servcie, zNodePathPrefix);
+
+        return serviceList;
+    }
+
+    /**
+     *
+     * Register watcher
+     *
+     * @param service
+     * @param zNodePathPrefix
+     */
+    private void registerWatcher(final String service, final String zNodePathPrefix) {
+
+        PathChildrenCache nodeCache = new PathChildrenCache(zkClient, zNodePathPrefix, true);
+
+        try {
+            nodeCache.getListenable().addListener((client, pathChildrenCacheEvent) -> {
+
+                // update local cache
+                serviceList = client.getChildren().forPath(zNodePathPrefix);
+                listenerList.stream().forEach(nodeChangeListener -> {
+                    System.out.println("Node changed");
+                    nodeChangeListener.notify(service, serviceList, pathChildrenCacheEvent);
+                });
+            });
+
+            // /lg-edu-rpc/com.lagou.edu.api.UserService/provider/127.0.0.1:8990
+            /*
+             * StartMode：
+             * POST_INITIALIZED_EVENT: async init, it will trigger the event
+             * NORMAL：async init
+             * BUILD_INITIAL_CACHE：sync init
+             *
+             * */
+            nodeCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void addListener(NodeChangeListener listener) {
-
+        listenerList.add(listener);
     }
 
     @Override
     public void destroy() {
 
+        if (null != zkClient) {
+            zkClient.close();
+        }
     }
 
     /**
@@ -304,15 +393,14 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
     /**
      *
      * Generate ZNode path without server ip and port num: /lg-rpc/ + service + /provider
-     * Example: /lg-rpc/com.chygo.rpc.api.SimpleResponse/provider/
-     * Full path: /lg-rpc/com.chygo.rpc.api.SimpleResponse/provider/127.0.0.1:8898
+     * Example: parent path: /lg-rpc/com.chygo.rpc.api.SimpleResponse/provider/
+     * Full path (parent path + children path): /lg-rpc/com.chygo.rpc.api.SimpleResponse/provider/127.0.0.1:8898
      *
      * @param service
      * @return
      */
-    private String genProviderPath(String service) {
+    private String genZNodePathPrefix(String service) {
         return Util.ZNODE_PATH_PREFIX + service + Util.ZNODE_PATH_DELIMITER + PROVIDER_NAME;
     }
-
 
 }
