@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     /**
      *
      * This is for mocking data.
-     * 
+     *
      */
     private void initUserMap() {
         User user1 = new User();

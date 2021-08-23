@@ -3,7 +3,7 @@ package com.lagou.rpc.consumer.client;
 import com.lagou.rpc.pojo.RpcRequest;
 import com.lagou.rpc.pojo.RpcResponse;
 import com.lagou.rpc.consumer.handler.RpcClientHandler;
-import com.lagou.rpc.service.JSONSerializer;
+import com.lagou.rpc.serializer.JSONSerializer;
 import com.lagou.rpc.service.RpcDecoder;
 import com.lagou.rpc.service.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;

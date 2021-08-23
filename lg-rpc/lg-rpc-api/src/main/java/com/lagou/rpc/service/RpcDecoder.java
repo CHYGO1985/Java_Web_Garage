@@ -1,6 +1,6 @@
 package com.lagou.rpc.service;
 
-import com.lagou.rpc.api.Serializer;
+import com.lagou.rpc.serializer.Serializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;

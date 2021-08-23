@@ -1,4 +1,4 @@
-package com.lagou.rpc.api;
+package com.lagou.rpc.serializer;
 
 import java.io.IOException;
 

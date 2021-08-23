@@ -1,7 +1,6 @@
-package com.lagou.rpc.service;
+package com.lagou.rpc.serializer;
 
 import com.alibaba.fastjson.JSON;
-import com.lagou.rpc.api.Serializer;
 
 import java.io.IOException;
 
