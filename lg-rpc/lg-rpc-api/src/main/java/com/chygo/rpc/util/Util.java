@@ -17,5 +17,11 @@ public class Util {
     public static final int SERVER_PORT_NUM = 8899;
 
     // General package prefix
-    public static final String PACKAGE_PREFIX = "com.lagou.edu";
+    public static final String PACKAGE_PREFIX = "com.chygo";
+
+    // Package path delimiter
+    public static final String PACKAGE_PATH_DELIMITER = ".";
+
+    // Java complied class suffix
+    public static final String JAVA_COMP_CLASS_SUFFIX = ".class";
 }
