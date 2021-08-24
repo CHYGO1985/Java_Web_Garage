@@ -197,12 +197,12 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
      *
      * Create an ephemeral ZNode without any data on ZooKeeper.
      *
-     * @param zNdoePath
+     * @param zNodePath
      */
-    public void createEphemeralZNodeWithoutData(String zNdoePath) {
+    public void createEphemeralZNodeWithoutData(String zNodePath) {
 
         try {
-            zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(zNdoePath);
+            zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(zNodePath);
         } catch (Exception e) {
             throw new IllegalStateException(e.getMessage(), e);
         }
