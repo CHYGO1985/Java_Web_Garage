@@ -13,8 +13,8 @@ public class ConfigKeeper {
     private static volatile ConfigKeeper configKeeper;
     // Zookeeper port num
     private int port;
-    // Zookeeper IP address
-    private String address;
+    // Zookeeper IP address and port num: "127.0.0.1:2181"
+    private String zooKeeperAddr;
     // Report interval in the unit of second
     private int interval;
     // Client
@@ -59,12 +59,12 @@ public class ConfigKeeper {
         this.port = port;
     }
 
-    public String getAddress() {
-        return address;
+    public String getZooKeeperAddr() {
+        return zooKeeperAddr;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setZooKeeperAddr(String zooKeeperAddr) {
+        this.zooKeeperAddr = zooKeeperAddr;
     }
 
     public int getInterval() {
