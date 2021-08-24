@@ -1,13 +1,15 @@
 package com.chygo.rpc.consumer.proxy;
 
 import com.chygo.rpc.consumer.client.RpcClient;
+import com.chygo.rpc.consumer.loadbalancer.LoadBalanceStrategy;
+import com.chygo.rpc.consumer.loadbalancer.impl.RandomLoadBalancer;
 import com.chygo.rpc.pojo.RpcRequest;
-import com.chygo.rpc.pojo.RpcResponse;
-import com.chygo.rpc.util.Util;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -28,11 +30,19 @@ import java.util.UUID;
  *
  */
 public class RpcClientProxy {
+    
+    private static LoadBalanceStrategy loadBalanceStrategy = new RandomLoadBalancer();
+    // unit : ms
+    private final static int THREAD_SLEEP_TIME = 3000;
 
-    public static Object createProxy(Class serviceClass) {
+    public static Object createProxy(final Class<?> serviceClass,
+                                     final Map<String, List<RpcClient>> serviceClientMap) {
+
         return Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                 new Class[]{serviceClass}, new InvocationHandler() {
 
+            /*
+                    // Create a RpcClient to send and receive message
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
@@ -62,6 +72,51 @@ public class RpcClientProxy {
                             throw e;
                         } finally {
                             rpcClient.close();
+                        }
+                    }
+                });
+        */
+
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+                        // get Netty client
+                        String serviceClassName = serviceClass.getName();
+
+                        // wrap request object
+                        RpcRequest rpcRequest = new RpcRequest();
+                        rpcRequest.setRequestId(UUID.randomUUID().toString());
+                        rpcRequest.setClassName(method.getDeclaringClass().getName());
+                        rpcRequest.setMethodName(method.getName());
+                        rpcRequest.setParameterTypes(method.getParameterTypes());
+                        rpcRequest.setParameters(args);
+
+                        System.out.println("Request content: " + rpcRequest);
+
+                        // get data from server end
+                        RpcClient rpcClient = loadBalanceStrategy.route(serviceClientMap, serviceClassName);
+                        if (null == rpcClient) {
+                            return null;
+                        }
+
+                        try {
+                            return rpcClient.send(rpcRequest);
+                        } catch (Exception e) {
+
+                            if (e.getClass().getName().equals("java.nio.channels.ClosedChannelException")) {
+                                System.out.println("Exception thrown when sending message : " + e.getMessage());
+                                e.printStackTrace();
+                                Thread.sleep(THREAD_SLEEP_TIME);
+                                RpcClient otherRpcClient = loadBalanceStrategy.route(serviceClientMap,
+                                        serviceClassName);
+                                if (null == otherRpcClient) {
+                                    return null;
+                                }
+
+                                return otherRpcClient.send(rpcRequest);
+                            }
+
+                            throw e;
                         }
                     }
                 });
