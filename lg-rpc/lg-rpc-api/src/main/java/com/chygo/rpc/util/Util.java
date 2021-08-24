@@ -12,7 +12,7 @@ public class Util {
 
     /**
      *
-     * Server end related constants.
+     * Server end related constants for RPC.
      *
      */
     // Server IP : 127.0.0.1
@@ -44,4 +44,18 @@ public class Util {
     public static final String ZNODE_PATH_PREFIX = "/lg-rpc/";
     public static final String ZNODE_PATH_DELIMITER = "/";
     public static final String UTF_8 = "UTF-8";
+
+    /**
+     *
+     * ZooKeeper server config.
+     *
+     */
+    public static final String ZOOKEEPER_ADDRESS = "127.0.0.1:2181";
+
+    /**
+     *
+     * Rpc server config
+     *
+     */
+    public static final int DEF_SERVER_PORT = 8990;
 }
