@@ -50,7 +50,7 @@ public class RpcServerConfig {
     /**
      * Service name and instance mapper.
      */
-    private Map<String, Object> services;
+    private Map<String, Object> servicesMap;
 
     /**
      * Service list.

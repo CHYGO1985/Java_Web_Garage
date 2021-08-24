@@ -1,10 +1,8 @@
 package com.chygo.rpc.provider;
 
 import com.chygo.rpc.config.ConfigKeeper;
-import com.chygo.rpc.provider.server.RpcServer;
 import com.chygo.rpc.util.Util;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,9 +21,6 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(value = "com.chygo")
 @SpringBootApplication
 public class ServerBootstrapApplication {
-
-    @Autowired
-    RpcServer rpcServer;
 
     private static final int DEF_REPORT_INTERVAL = 5;
 
