@@ -35,6 +35,8 @@ public class SvcsProviderLoader {
 
     private static void loadSvcsProviderInstance(String packageName) {
 
+        findProviderClass(packageName);
+        putProviderInstance(packageName);
     }
 
     /**

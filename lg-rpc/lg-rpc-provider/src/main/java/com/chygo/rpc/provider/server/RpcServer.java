@@ -104,7 +104,8 @@ public class RpcServer implements InitializingBean, DisposableBean {
             }
             System.out.println("========== Server register begin  ==========");
             this.register(svrIp, svrPort, appName, rpcServerConfig.getServicesMap());
-            System.out.println("========== Server is successfully launched ==========");
+            System.out.println("========== Server is successfully launched. ip: "  + svrIp + ", port: "
+                    + svrPort + " ==========");
 
             sync.channel().closeFuture().sync();
         } catch (InterruptedException e) {
