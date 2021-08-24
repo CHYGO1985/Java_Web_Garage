@@ -23,6 +23,9 @@ import java.util.concurrent.ScheduledExecutorService;
  *
  * The ZooKeeper based register center.
  * The ZNode path will be: /lg-rpc/com.chygo.rpc.api.SimpleResponse/provider/127.0.0.1:8898
+ * 1) connect the server to ZooKeeper
+ * 2) register services provided by the server to ZooKeeper
+ * 3) discover services (client)
  *
  * @author jingjiejiang
  * @history Aug 23, 2021
@@ -48,6 +51,12 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
     private List<String> serviceList = new CopyOnWriteArrayList<>();
     private static final ScheduledExecutorService REPORT_WORKER = Executors.newScheduledThreadPool(1);
 
+    /**
+     *
+     * Connect the server to ZooKeeper.
+     *
+     * @param url
+     */
     public ZookeeperRegistryHandler(String url) {
 
         this.url = url;
