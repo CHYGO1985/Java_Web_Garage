@@ -8,6 +8,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleStateEvent;
 import org.springframework.beans.BeansException;
 import org.springframework.cglib.reflect.FastClass;
 import org.springframework.cglib.reflect.FastMethod;
@@ -164,6 +165,23 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> im
         // this is for checking if the reason of writing fails
         if (!cf.isSuccess()) {
             System.out.println("Send failed: " + cf.cause());
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext context, Throwable throwable) {
+
+        System.out.println("Exception: " + throwable.getMessage());
+        context.channel().close();
+    }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext context, Object obj) throws Exception {
+
+        if (obj instanceof IdleStateEvent) {
+            context.channel().close();
+        } else {
+            super.userEventTriggered(context, obj);
         }
     }
 
