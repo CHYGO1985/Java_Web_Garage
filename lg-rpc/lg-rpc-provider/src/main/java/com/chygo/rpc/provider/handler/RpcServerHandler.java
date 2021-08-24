@@ -1,9 +1,9 @@
 package com.chygo.rpc.provider.handler;
 
-import com.alibaba.fastjson.JSON;
+import com.chygo.rpc.annotation.RpcService;
 import com.chygo.rpc.pojo.RpcRequest;
 import com.chygo.rpc.pojo.RpcResponse;
-import com.chygo.rpc.annotation.RpcService;
+import com.chygo.rpc.service.HeartBeat;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -42,7 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 @ChannelHandler.Sharable
-public class RpcServerHandler extends SimpleChannelInboundHandler<String> implements ApplicationContextAware {
+public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> implements ApplicationContextAware {
 
     private static final Map SERVICE_INSTANCE_MAP = new ConcurrentHashMap();
 
@@ -81,24 +81,26 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> implem
      * @throws Exception
      *
      */
-    @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
-
-        // Receive client request -- transform msg to RpcRequest object
-        RpcRequest rpcRequest = JSON.parseObject(msg, RpcRequest.class);
-        RpcResponse rpcResponse = new RpcResponse();
-        rpcResponse.setRequestId(rpcRequest.getRequestId());
-        try {
-            // business logic handling
-            rpcResponse.setResult(handler(rpcRequest));
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            rpcResponse.setError(exception.getMessage());
-        }
-
-        // 6. send response to client
-        channelHandlerContext.writeAndFlush(JSON.toJSONString(rpcResponse));
-    }
+//    @Override
+//    protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
+//
+//        if (HeartBeat.BEAT_ID.equalsIgnoreCase())
+//
+//        // Receive client request -- transform msg to RpcRequest object
+//        RpcRequest rpcRequest = JSON.parseObject(msg, RpcRequest.class);
+//        RpcResponse rpcResponse = new RpcResponse();
+//        rpcResponse.setRequestId(rpcRequest.getRequestId());
+//        try {
+//            // business logic handling
+//            rpcResponse.setResult(handler(rpcRequest));
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//            rpcResponse.setError(exception.getMessage());
+//        }
+//
+//        // 6. send response to client
+//        channelHandlerContext.writeAndFlush(JSON.toJSONString(rpcResponse));
+//    }
 
     /**
      *
@@ -112,6 +114,41 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> implem
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
 
         RpcRequest rpcRequest = (RpcRequest) msg;
+        RpcResponse rpcResponse = new RpcResponse();
+        rpcResponse.setRequestId(rpcRequest.getRequestId());
+        try {
+//            rpcResponse.setResult(handler(rpcRequest));
+            handler(rpcRequest);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            rpcResponse.setError(exception.getMessage());
+        }
+
+        rpcResponse.setResult((Object) "success");
+        ChannelFuture cf = channelHandlerContext.writeAndFlush(rpcResponse);
+        // this is for checking if the reason of writing fails
+        if (!cf.isSuccess()) {
+            System.out.println("Send failed: " + cf.cause());
+        }
+    }
+
+    /**
+     *
+     * Channel ready for reading event
+     *
+     * @param channelHandlerContext
+     * @param rpcRequest
+     * @throws Exception
+     */
+    @Override
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcRequest rpcRequest) throws Exception {
+
+        // if there is no new request, and the request ID equals to the old one in heartbeat
+        if (HeartBeat.BEAT_ID.equalsIgnoreCase(rpcRequest.getRequestId())) {
+            System.out.println("==== Server Idle ====");
+            return ;
+        }
+
         RpcResponse rpcResponse = new RpcResponse();
         rpcResponse.setRequestId(rpcRequest.getRequestId());
         try {
