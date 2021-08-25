@@ -28,6 +28,9 @@ import java.util.UUID;
  * Aug 18, 2021
  * 1. revised invoke() method, to receive message as JSON.
  *
+ * Aug 24, 2021
+ * 1. add a new invoke() method for using loadbalancer
+ *
  */
 public class RpcClientProxy {
     

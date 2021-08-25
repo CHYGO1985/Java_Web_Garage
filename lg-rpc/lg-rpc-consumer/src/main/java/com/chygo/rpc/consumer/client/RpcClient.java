@@ -47,15 +47,15 @@ public class RpcClient {
     public RpcClient(String ip, int port) {
         this.ip = ip;
         this.port = port;
-        initClient();
     }
 
     /**
      *
      * Init method -- connect to Netty server.
      *
+     * @param svcsInterfaceName
      */
-    public void initClient() {
+    public void initClient(String svcsInterfaceName) throws InterruptedException {
 
         try {
             // 1.Create thread pool
@@ -94,6 +94,8 @@ public class RpcClient {
                 group.shutdownGracefully();
             }
         }
+
+        System.out.println("==== Launch client: " + svcsInterfaceName + ", ip" + ip + ", port" + port + "====");
     }
 
     /**
