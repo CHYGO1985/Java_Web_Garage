@@ -9,7 +9,8 @@ import com.chygo.rpc.consumer.proxy.RpcClientProxy;
 import com.chygo.rpc.regsitry.handler.ZookeeperRegistryHandler;
 import com.chygo.rpc.util.Util;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * For testing.

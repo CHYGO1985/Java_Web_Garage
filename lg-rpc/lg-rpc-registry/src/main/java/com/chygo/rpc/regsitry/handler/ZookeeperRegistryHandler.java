@@ -98,7 +98,7 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
             createZNodeWithoutData(zNodePathPrefix, false);
         }
 
-        // full node path: /lg-edu-rpc/com.lagou.edu.api.UserService/provider/127.0.0.1:8990
+        // full node path: /lg-rpc/com.chygo.api.UserService/provider/127.0.0.1:8990
         String zNodePath = zNodePathPrefix + Util.PACKAGE_PATH_DELIMITER + ip + IP_PORT_NUM_CONNECTOR + port;
         createZNodeWithoutData(zNodePath, true);
 

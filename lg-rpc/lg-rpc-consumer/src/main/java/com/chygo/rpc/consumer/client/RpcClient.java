@@ -1,8 +1,8 @@
 package com.chygo.rpc.consumer.client;
 
+import com.chygo.rpc.consumer.handler.RpcClientHandler;
 import com.chygo.rpc.pojo.RpcRequest;
 import com.chygo.rpc.pojo.RpcResponse;
-import com.chygo.rpc.consumer.handler.RpcClientHandler;
 import com.chygo.rpc.serializer.JSONSerializer;
 import com.chygo.rpc.service.HeartBeat;
 import com.chygo.rpc.service.RpcDecoder;
@@ -14,7 +14,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
-import java.util.concurrent.*;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -114,7 +118,7 @@ public class RpcClient {
             return ;
         }
 
-        System.out.println("==== Launch client: " + svcsInterfaceName + ", ip" + ip + ", port" + port + "====");
+        System.out.println("==== Launch client: " + svcsInterfaceName + ", ip: " + ip + ", port: " + port + "====");
     }
 
     /**
@@ -151,12 +155,12 @@ public class RpcClient {
      * send message as an object.
      *
      */
-    public Object sendMsg(Object msg) throws ExecutionException, InterruptedException {
-
-        rpcClientHandler.setRequestObjMsg(msg);
-        Future submit = executorService.submit(rpcClientHandler);
-        return submit.get();
-    }
+//    public Object sendMsg(Object msg) throws ExecutionException, InterruptedException {
+//
+//        rpcClientHandler.setRequestObjMsg(msg);
+//        Future submit = executorService.submit(rpcClientHandler);
+//        return submit.get();
+//    }
 
     /**
      *
@@ -170,5 +174,26 @@ public class RpcClient {
     public Object sendRpcRequest(RpcRequest rpcRequest) throws ExecutionException, InterruptedException {
 
         return this.channel.writeAndFlush(rpcRequest).sync().get();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        RpcClient rpcClient = (RpcClient) obj;
+
+        return port == rpcClient.port && ip.equals(rpcClient.ip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ip, port);
     }
 }

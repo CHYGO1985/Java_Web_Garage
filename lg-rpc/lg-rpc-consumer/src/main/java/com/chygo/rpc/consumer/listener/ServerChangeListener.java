@@ -25,7 +25,7 @@ public class ServerChangeListener implements NodeChangeListener {
     private static final int IP_IDX = 0;
     private static final int PORT_NUM_IDX = 1;
 
-    private static final Map<String, List<RpcClient>> SERVICE_CLIENT_MAP = new ConcurrentHashMap<>();
+    public static Map<String, List<RpcClient>> SERVICE_CLIENT_MAP = new ConcurrentHashMap<>();
     private RpcRegistryHandler rpcRegistryHandler;
     private Map<String, Object> serviceInstanceMap;
 
