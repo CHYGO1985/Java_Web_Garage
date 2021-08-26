@@ -99,7 +99,7 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
         }
 
         // full node path: /lg-rpc/com.chygo.api.UserService/provider/127.0.0.1:8990
-        String zNodePath = zNodePathPrefix + Util.PACKAGE_PATH_DELIMITER + ip + IP_PORT_NUM_CONNECTOR + port;
+        String zNodePath = zNodePathPrefix + Util.ZNODE_PATH_DELIMITER + ip + IP_PORT_NUM_CONNECTOR + port;
         createZNodeWithoutData(zNodePath, true);
 
         return true;
@@ -115,7 +115,7 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
     @Override
     public List<String> discover(String servcie) {
 
-        // parent node: /lg-edu-rpc/com.lagou.edu.api.UserService/provider
+        // parent node: /lg-rpc/com.chygo.api.UserService/provider
         String zNodePathPrefix = genZNodePathPrefix(servcie);
 
         try {
