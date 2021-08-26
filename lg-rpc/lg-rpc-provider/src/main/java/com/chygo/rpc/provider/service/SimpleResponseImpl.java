@@ -1,6 +1,8 @@
 package com.chygo.rpc.provider.service;
 
+import com.chygo.rpc.annotation.RpcService;
 import com.chygo.rpc.api.SimpleResponse;
+import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
@@ -12,6 +14,8 @@ import java.util.Random;
  * @history Aug 23, 2021
  *
  */
+@RpcService
+@Service
 public class SimpleResponseImpl implements SimpleResponse {
 
     @Override
