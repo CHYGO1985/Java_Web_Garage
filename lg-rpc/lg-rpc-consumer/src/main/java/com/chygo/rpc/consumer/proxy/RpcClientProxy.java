@@ -36,7 +36,7 @@ public class RpcClientProxy {
     
     private static LoadBalanceStrategy loadBalanceStrategy = new RandomLoadBalancer();
     // unit : ms
-    private final static int THREAD_SLEEP_TIME = 3000;
+    private final static int THREAD_SLEEP_TIME = 5000;
 
     public static Object createProxy(final Class<?> serviceClass,
                                      final Map<String, List<RpcClient>> serviceClientMap) {

@@ -95,8 +95,88 @@ public class ServerChangeListener implements NodeChangeListener {
         return SERVICE_CLIENT_MAP;
     }
 
+    /**
+     *
+     * Node change handling event.
+     *
+     * @param serviceName
+     * @param serviceList
+     * @param pathChildrenCacheEvent
+     */
     @Override
-    public void notify(String children, List<String> serviceList, PathChildrenCacheEvent pathChildrenCacheEvent) {
+    public void notify(String serviceName, List<String> serviceList, PathChildrenCacheEvent pathChildrenCacheEvent) {
 
+        // get the current clients that connect to the server
+        List<RpcClient> rpcClients = SERVICE_CLIENT_MAP.get(serviceName);
+        PathChildrenCacheEvent.Type eventType = pathChildrenCacheEvent.getType();
+        System.out.println("Server change event received: " + eventType + "----" + rpcClients
+            + "----" + serviceName + "----" + serviceList);
+
+        // path: /lg-rpc/com.chygo.rpc.api.UserService/provider/127.0.0.1:8990
+        String path = pathChildrenCacheEvent.getData().getPath();
+        String svrAddr = path.substring(path.lastIndexOf("/") + 1);
+        String[] addrElems = svrAddr.split(":");
+
+        // if the event type is to add new nodes in ZooKeeper and ge the server addr and add to SERVICE_CLIENT_MAP
+        if (PathChildrenCacheEvent.Type.CHILD_ADDED.equals(eventType)
+            || PathChildrenCacheEvent.Type.CONNECTION_RECONNECTED.equals(eventType)) {
+
+            addClientToService(serviceName, rpcClients, addrElems);
+            System.out.println("New added Node: " + svrAddr);
+        } else if (PathChildrenCacheEvent.Type.CHILD_REMOVED.equals(eventType)
+                || PathChildrenCacheEvent.Type.CONNECTION_SUSPENDED.equals(eventType)
+                || PathChildrenCacheEvent.Type.CONNECTION_LOST.equals(eventType)) {
+
+            removeClientFromService(svrAddr, rpcClients, addrElems);
+        }
+    }
+
+    /**
+     *
+     * Add a client with specified ip and port to <service : clients> map.
+     *
+     * @param serviceName
+     * @param rpcClients
+     * @param addrElems specified ip and port
+     */
+    private void addClientToService(String serviceName, List<RpcClient> rpcClients, String[] addrElems) {
+
+        if (CollectionUtils.isEmpty(rpcClients)) {
+            rpcClients = new ArrayList<>();
+        }
+
+        RpcClient client = new RpcClient(addrElems[IP_IDX], Integer.parseInt(addrElems[PORT_NUM_IDX]));
+        try {
+            client.initClient(serviceName);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        rpcClients.add(client);
+    }
+
+    /**
+     *
+     * Remove a client with specified ip and port from <service : clients> map.
+     *
+     * @param svrAddr
+     * @param rpcClients
+     * @param addrElems specified ip and port
+     */
+    private void removeClientFromService(String svrAddr, List<RpcClient> rpcClients, String[] addrElems) {
+
+        // remove node
+        if (CollectionUtils.isNotEmpty(rpcClients)) {
+
+            for (int idx = 0; idx < rpcClients.size(); idx ++) {
+                RpcClient client = rpcClients.get(idx);
+                if (client.getIp().equalsIgnoreCase(addrElems[IP_IDX]) &&
+                        client.getPort() == Integer.parseInt(addrElems[PORT_NUM_IDX])) {
+                    rpcClients.remove(client);
+                }
+
+                System.out.println("Node removed: " + svrAddr);
+            }
+        }
     }
 }
