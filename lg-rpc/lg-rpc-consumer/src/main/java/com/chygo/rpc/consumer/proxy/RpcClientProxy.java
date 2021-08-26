@@ -11,6 +11,7 @@ import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 /**
  *
@@ -37,6 +38,48 @@ public class RpcClientProxy {
     private static LoadBalanceStrategy loadBalanceStrategy = new RandomLoadBalancer();
     // unit : ms
     private final static int THREAD_SLEEP_TIME = 5000;
+
+    /**
+     *
+     * Create a new RpcRequest instance.
+     *
+     * @param method
+     * @param args
+     * @return
+     */
+    private static RpcRequest initRpcRequeset(Method method, Object[] args) {
+
+        RpcRequest rpcRequest = new RpcRequest();
+        rpcRequest.setRequestId(UUID.randomUUID().toString());
+        rpcRequest.setClassName(method.getDeclaringClass().getName());
+        rpcRequest.setMethodName(method.getName());
+        rpcRequest.setParameterTypes(method.getParameterTypes());
+        rpcRequest.setParameters(args);
+
+        return rpcRequest;
+    }
+
+    /**
+     *
+     * Resend a RpcRequest.
+     *
+     * @param serviceClientMap
+     * @param serviceClassName
+     * @param rpcRequest
+     * @return
+     */
+    private static Object resendRpcRequest(final Map<String, List<RpcClient>> serviceClientMap,
+                                           String serviceClassName,
+                                           RpcRequest rpcRequest) throws ExecutionException, InterruptedException {
+
+        RpcClient otherRpcClient = loadBalanceStrategy.route(serviceClientMap,
+                serviceClassName);
+        if (null == otherRpcClient) {
+            return null;
+        }
+
+        return otherRpcClient.sendRpcRequest(rpcRequest);
+    }
 
     public static Object createProxy(final Class<?> serviceClass,
                                      final Map<String, List<RpcClient>> serviceClientMap) {
@@ -87,13 +130,7 @@ public class RpcClientProxy {
                         String serviceClassName = serviceClass.getName();
 
                         // wrap request object
-                        RpcRequest rpcRequest = new RpcRequest();
-                        rpcRequest.setRequestId(UUID.randomUUID().toString());
-                        rpcRequest.setClassName(method.getDeclaringClass().getName());
-                        rpcRequest.setMethodName(method.getName());
-                        rpcRequest.setParameterTypes(method.getParameterTypes());
-                        rpcRequest.setParameters(args);
-
+                        RpcRequest rpcRequest = initRpcRequeset(method, args);
                         System.out.println("Request content: " + rpcRequest);
 
                         // get data from server end
@@ -103,20 +140,14 @@ public class RpcClientProxy {
                         }
 
                         try {
-                            return rpcClient.send(rpcRequest);
+                            return rpcClient.sendRpcRequest(rpcRequest);
                         } catch (Exception e) {
 
                             if (e.getClass().getName().equals("java.nio.channels.ClosedChannelException")) {
                                 System.out.println("Exception thrown when sending message : " + e.getMessage());
                                 e.printStackTrace();
                                 Thread.sleep(THREAD_SLEEP_TIME);
-                                RpcClient otherRpcClient = loadBalanceStrategy.route(serviceClientMap,
-                                        serviceClassName);
-                                if (null == otherRpcClient) {
-                                    return null;
-                                }
-
-                                return otherRpcClient.send(rpcRequest);
+                                resendRpcRequest(serviceClientMap, serviceClassName, rpcRequest);
                             }
 
                             throw e;

@@ -4,6 +4,7 @@ import com.chygo.rpc.pojo.RpcRequest;
 import com.chygo.rpc.pojo.RpcResponse;
 import com.chygo.rpc.consumer.handler.RpcClientHandler;
 import com.chygo.rpc.serializer.JSONSerializer;
+import com.chygo.rpc.service.HeartBeat;
 import com.chygo.rpc.service.RpcDecoder;
 import com.chygo.rpc.service.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;
@@ -11,11 +12,9 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 /**
  *
@@ -92,6 +91,10 @@ public class RpcClient {
 //                            pipeline.addLast(new StringDecoder());
 //                            pipeline.addLast(new StringEncoder());
 
+                            pipeline.addLast(new IdleStateHandler(0, 0,
+                                    HeartBeat.BEAT_INTERVAL,
+                                    TimeUnit.SECONDS));
+
                             // Add JSON Decoder/Encoder
                             pipeline.addLast(new RpcDecoder(RpcResponse.class, new JSONSerializer()));
                             pipeline.addLast(new RpcEncoder(RpcRequest.class, new JSONSerializer()));
@@ -103,15 +106,30 @@ public class RpcClient {
             channel = bootstrap.connect(ip, port).sync().channel();
         } catch (Exception exception) {
             exception.printStackTrace();
-            if (channel != null) {
-                channel.close();
-            }
-            if (group != null) {
-                group.shutdownGracefully();
-            }
+            close();
+        }
+
+        if (!isValid()) {
+            close();
+            return ;
         }
 
         System.out.println("==== Launch client: " + svcsInterfaceName + ", ip" + ip + ", port" + port + "====");
+    }
+
+    /**
+     *
+     * Check if the connection is valid.
+     *
+     * @return
+     */
+    private boolean isValid() {
+
+        if (this.channel != null) {
+            return this.channel.isActive();
+        }
+
+        return false;
     }
 
     /**
@@ -133,10 +151,24 @@ public class RpcClient {
      * send message as an object.
      *
      */
-    public Object send(Object msg) throws ExecutionException, InterruptedException {
+    public Object sendMsg(Object msg) throws ExecutionException, InterruptedException {
 
         rpcClientHandler.setRequestObjMsg(msg);
         Future submit = executorService.submit(rpcClientHandler);
         return submit.get();
+    }
+
+    /**
+     *
+     * Send message as an RpcRequest instance.
+     *
+     * @param rpcRequest
+     * @return
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public Object sendRpcRequest(RpcRequest rpcRequest) throws ExecutionException, InterruptedException {
+
+        return this.channel.writeAndFlush(rpcRequest).sync().get();
     }
 }
