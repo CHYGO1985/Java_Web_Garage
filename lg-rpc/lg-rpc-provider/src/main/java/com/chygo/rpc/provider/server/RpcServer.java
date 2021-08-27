@@ -111,13 +111,23 @@ public class RpcServer implements InitializingBean, DisposableBean {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            if (bossGroup != null) {
-                bossGroup.shutdownGracefully();
-            }
+            close();
+        }
+    }
 
-            if (workerGroup != null) {
-                workerGroup.shutdownGracefully();
-            }
+    /**
+     *
+     * Close the rpc server.
+     *
+     */
+    private void close() {
+
+        if (bossGroup != null) {
+            bossGroup.shutdownGracefully();
+        }
+
+        if (workerGroup != null) {
+            workerGroup.shutdownGracefully();
         }
     }
 

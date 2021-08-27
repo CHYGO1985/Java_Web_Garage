@@ -42,7 +42,6 @@ public class ZookeeperRegistryHandler implements RpcRegistryHandler {
     private static final String PROVIDER_NAME = "provider";
     private static final String IP_PORT_NUM_CONNECTOR = ":";
 
-
     private static final List<NodeChangeListener> listenerList = new ArrayList<>();
     // ZooKeeper server url: 127.0.0.1:2181
     private final String url;
