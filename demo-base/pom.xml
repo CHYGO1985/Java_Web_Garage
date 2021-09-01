@@ -12,6 +12,7 @@
         <module>service-api</module>
         <module>service-provider</module>
         <module>service-consumer</module>
+        <module>service-filter</module>
     </modules>
     <properties>
         <dubbo.version>2.7.5 </dubbo.version>
