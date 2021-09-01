@@ -9,7 +9,7 @@ public class ComsumerComponet {
     @Reference
     private HelloService  helloService;
     public String  sayHello(String name){
-        return  helloService.sayHello(name);
+        return  helloService.sayHello1(name);
     }
 
 }
