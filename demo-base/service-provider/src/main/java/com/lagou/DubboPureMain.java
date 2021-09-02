@@ -14,6 +14,7 @@ public class DubboPureMain {
         context.start();
         System.in.read();
     }
+
     @Configuration
     @EnableDubbo(scanBasePackages = "com.lagou.service.impl")
     @PropertySource("classpath:/dubbo-provider.properties")

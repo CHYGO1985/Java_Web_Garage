@@ -12,6 +12,13 @@
     <artifactId>service-consumer</artifactId>
     <dependencies>
 
+        <!-- add filter dependency -->
+        <dependency>
+            <groupId>com.lagou</groupId>
+            <artifactId>service-filter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>com.lagou</groupId>
             <artifactId>service-api</artifactId>

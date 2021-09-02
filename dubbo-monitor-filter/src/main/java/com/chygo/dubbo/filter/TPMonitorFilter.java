@@ -71,27 +71,27 @@ public class TPMonitorFilter implements Filter {
         // test
         System.out.println("Filter invoked");
 
-        long startTime = System.currentTimeMillis();
-        Result result = null;
-        try {
-            result = invoker.invoke(invocation);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            final long respTime = System.currentTimeMillis() - startTime;
-            final String serviceName = invocation.getServiceName();
-            final String methodName = invocation.getMethodName();
-            final String key = serviceName + "#" + methodName;
-            DelayQueue<SpentTime> delayQueue = methodSpentTimeMap.get(key);
-            if (delayQueue == null) {
-                delayQueue = new DelayQueue<>();
-            }
+//        long startTime = System.currentTimeMillis();
+//        Result result = null;
+//        try {
+//            result = invoker.invoke(invocation);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            final long respTime = System.currentTimeMillis() - startTime;
+//            final String serviceName = invocation.getServiceName();
+//            final String methodName = invocation.getMethodName();
+//            final String key = serviceName + "#" + methodName;
+//            DelayQueue<SpentTime> delayQueue = methodSpentTimeMap.get(key);
+//            if (delayQueue == null) {
+//                delayQueue = new DelayQueue<>();
+//            }
+//
+//            delayQueue.put(new SpentTime(respTime, EXPIRE_TIME * 1000));
+//            methodSpentTimeMap.put(key, delayQueue);
+//        }
 
-            delayQueue.put(new SpentTime(respTime, EXPIRE_TIME * 1000));
-            methodSpentTimeMap.put(key, delayQueue);
-        }
-
-        return result;
+        return null;
     }
 
     /**
