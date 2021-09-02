@@ -68,9 +68,6 @@ public class TPMonitorFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
 
-        // test
-        System.out.println("Filter invoked");
-
         long startTime = System.currentTimeMillis();
         Result result = null;
         try {
@@ -78,6 +75,8 @@ public class TPMonitorFilter implements Filter {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+
+            if (invocation.getMethodName() == "getMetadataInfo") return result;
             final long respTime = System.currentTimeMillis() - startTime;
             final String serviceName = invocation.getServiceName();
             final String methodName = invocation.getMethodName();

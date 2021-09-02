@@ -20,52 +20,60 @@ public class AnnotationConsumerMain  {
 
         // 获取消费者组件
         ComsumerComponent service = context.getBean(ComsumerComponent.class);
-        while(true){
-             System.in.read();
-             String  hello = service.sayHello1("world");
-             System.out.println("result:"+hello);
+//        while(true){
+//             System.in.read();
+//             String  hello = service.sayHello1("world");
+//             System.out.println("result:"+hello);
+//
+//             Thread.sleep(5);
+//             String  hello2 = service.sayHello2("world");
+//             System.out.println("result:"+hello2);
+//
+//            Thread.sleep(5);
+//            String  hello3 = service.sayHello3("world");
+//            System.out.println("result:"+hello3);
+//        }
+
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(100, 100,
+                0L, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100));
+        long startTime = System.currentTimeMillis();
+        int minutes = 3;
+        int count = 0;
+
+        while (true) {
+
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                threadPoolExecutor.execute(() -> {
+                    service.sayHello1("word1");
+                });
+
+                threadPoolExecutor.execute(() -> {
+                    service.sayHello2("word2");
+                });
+
+                threadPoolExecutor.execute(() -> {
+                    service.sayHello3("word3");
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            count ++;
+
+//            if (count % 100 == 0) System.out.println("running.... : " + count);
+
+            // only execute for 3 minutes
+            if ((System.currentTimeMillis() - startTime) > minutes * 60 * 1000) break;;
         }
 
-//        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(100, 100,
-//                0L, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100));
-//        long startTime = System.currentTimeMillis();
-//        int minutes = 3;
-//        int count = 0;
-//
-//        while (true) {
-//
-//            try {
-//                Thread.sleep(5);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//            try {
-//                threadPoolExecutor.execute(() -> {
-//                    service.sayHello1("word1");
-//                });
-//
-//                threadPoolExecutor.execute(() -> {
-//                    service.sayHello2("word2");
-//                });
-//
-//                threadPoolExecutor.execute(() -> {
-//                    service.sayHello3("word3");
-//                });
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//            count ++;
-//
-//            if (count % 100 == 0) System.out.println("running.... : " + count);
-//
-//            // only execute for 3 minutes
-//            if ((System.currentTimeMillis() - startTime) > minutes * 60 * 1000) break;;
-//        }
-//
-//        System.out.println("Every minutes the function is invoked " + count / minutes + " times");
+        System.out.println("Every minutes the function is invoked " + count / minutes + " times");
     }
 
     @Configuration
