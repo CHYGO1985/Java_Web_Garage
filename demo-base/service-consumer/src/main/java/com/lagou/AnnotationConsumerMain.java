@@ -67,8 +67,6 @@ public class AnnotationConsumerMain  {
 
             count ++;
 
-//            if (count % 100 == 0) System.out.println("running.... : " + count);
-
             // only execute for 3 minutes
             if ((System.currentTimeMillis() - startTime) > minutes * 60 * 1000) break;;
         }
