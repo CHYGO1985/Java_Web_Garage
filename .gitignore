@@ -184,6 +184,10 @@ lagou-transfer-ioc-anno/.idea/libraries/Maven__org_springframework_spring_tx_5_3
 /demo-base/service-consumer/target/
 /demo-base/service-api/target/
 /demo-base/service-provider/target/
+#HNFeed
+/HNFeed/target
+#FoodDelivery
+/FoodDelivery/target
 
 
 
